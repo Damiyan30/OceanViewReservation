@@ -1,15 +1,139 @@
-<!DOCTYPE html>
-<!--
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit this template
--->
+<!doctype html>
 <html>
-    <head>
-        <title>TODO supply a title</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body>
-        <div>TODO write content</div>
-    </body>
+<head>
+  <meta charset="utf-8" />
+  <title>Add Reservation</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; max-width: 640px; }
+    input, select { width: 100%; padding: 10px; margin: 6px 0 14px; }
+    button { padding: 10px 14px; cursor: pointer; }
+    .row { margin-bottom: 8px; }
+    .top { display:flex; justify-content:space-between; align-items:center; }
+    pre { background:#f6f6f6; padding:12px; border-radius:8px; overflow:auto; }
+  </style>
+</head>
+<body>
+  <div class="top">
+    <h2>Add Reservation</h2>
+    <a href="dashboard.html">Back</a>
+  </div>
+
+  <div class="row">
+    <label>Guest Name</label>
+    <input id="guestName" placeholder="e.g., John Silva">
+  </div>
+
+  <div class="row">
+    <label>Contact No</label>
+    <input id="contactNo" placeholder="e.g., 0771234567">
+  </div>
+
+  <div class="row">
+    <label>Email (optional)</label>
+    <input id="email" placeholder="e.g., john@gmail.com">
+  </div>
+
+  <div class="row">
+    <label>Address (optional)</label>
+    <input id="address" placeholder="e.g., Colombo">
+  </div>
+
+  <div class="row">
+    <label>Room Type</label>
+    <select id="typeId"></select>
+  </div>
+
+  <div class="row">
+    <label>Check-in</label>
+    <input id="checkIn" type="date">
+  </div>
+
+  <div class="row">
+    <label>Check-out</label>
+    <input id="checkOut" type="date">
+  </div>
+
+  <button id="btn">Save Reservation</button>
+
+  <pre id="out"></pre>
+
+  <script>
+    const out = (msg) => document.getElementById('out').textContent = msg;
+
+    async function ensureLoggedIn() {
+      const res = await fetch('api/me');
+      if (!res.ok) {
+        // not logged in
+        location.href = 'login.html';
+        return false;
+      }
+      return true;
+    }
+
+    async function loadTypes() {
+      const res = await fetch('api/room-types');
+      const txt = await res.text();
+
+      if (!res.ok) {
+        out("Failed to load room types:\n" + txt);
+        return;
+      }
+
+      const types = JSON.parse(txt);
+      const sel = document.getElementById('typeId');
+      sel.innerHTML = '';
+
+      types.forEach(t => {
+        const opt = document.createElement('option');
+        opt.value = t.typeId;
+        opt.textContent = `${t.typeName} (Rs. ${t.nightlyRate}/night)`;
+        sel.appendChild(opt);
+      });
+    }
+
+    document.getElementById('btn').addEventListener('click', async () => {
+      // basic validation
+      const guestName = document.getElementById('guestName').value.trim();
+      const contactNo = document.getElementById('contactNo').value.trim();
+      const checkIn = document.getElementById('checkIn').value;
+      const checkOut = document.getElementById('checkOut').value;
+
+      if (!guestName || !contactNo || !checkIn || !checkOut) {
+        out("Please fill: Guest Name, Contact No, Check-in, Check-out.");
+        return;
+      }
+
+      const body = {
+        guestName,
+        contactNo,
+        email: document.getElementById('email').value.trim(),
+        address: document.getElementById('address').value.trim(),
+        typeId: parseInt(document.getElementById('typeId').value, 10),
+        checkIn,
+        checkOut
+      };
+
+      const res = await fetch('api/reservations', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(body)
+      });
+
+      const txt = await res.text();
+      out(txt);
+
+      if (res.ok) {
+        const data = JSON.parse(txt);
+        alert("Reservation created! ID: " + data.reservationId);
+      }
+    });
+
+    (async () => {
+      // IMPORTANT: This page must be opened via Tomcat URL, not file://
+      // e.g. http://localhost:8080/OceanViewReservation/add-reservation.html
+      const ok = await ensureLoggedIn();
+      if (ok) await loadTypes();
+    })();
+  </script>
+</body>
 </html>

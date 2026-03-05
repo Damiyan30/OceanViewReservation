@@ -1,15 +1,50 @@
-<!DOCTYPE html>
-<!--
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit this template
--->
+<!doctype html>
 <html>
-    <head>
-        <title>TODO supply a title</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body>
-        <div>TODO write content</div>
-    </body>
+<head>
+  <meta charset="utf-8" />
+  <title>View Reservation</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; max-width: 720px; }
+    input { width: 100%; padding: 10px; margin: 6px 0 14px; }
+    button { padding: 10px 14px; cursor: pointer; }
+    pre { background:#f6f6f6; padding:12px; border-radius:8px; overflow:auto; }
+    .top { display:flex; justify-content:space-between; align-items:center; }
+  </style>
+</head>
+<body>
+  <div class="top">
+    <h2>View Reservation</h2>
+    <a href="dashboard.html">Back</a>
+  </div>
+
+  <label>Reservation ID</label>
+  <input id="rid" type="number" placeholder="e.g., 1">
+  <button id="btn">Search</button>
+
+  <pre id="out"></pre>
+
+  <script>
+    const out = (msg) => document.getElementById('out').textContent = msg;
+
+    async function ensureLoggedIn() {
+      const res = await fetch('api/me');
+      if (!res.ok) {
+        location.href = 'login.html';
+        return false;
+      }
+      return true;
+    }
+
+    document.getElementById('btn').addEventListener('click', async () => {
+      const id = document.getElementById('rid').value;
+      if (!id) { out("Enter a Reservation ID."); return; }
+
+      const res = await fetch('api/reservations?id=' + encodeURIComponent(id));
+      const txt = await res.text();
+      out(txt);
+    });
+
+    ensureLoggedIn();
+  </script>
+</body>
 </html>

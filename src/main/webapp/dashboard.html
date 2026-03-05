@@ -16,10 +16,10 @@
   <div class="card">
     <div id="user" class="small">Loading user...</div>
 
-    <button class="btn" onclick="go('add-reservation.html')">Add Reservation</button>
-    <button class="btn" onclick="go('view-reservation.html')">View Reservation</button>
-    <button class="btn" onclick="go('bill.html')">Calculate / Print Bill</button>
-    <button class="btn" onclick="go('help.html')">Help</button>
+    <button class="btn" onclick="location.href='add-reservation.html'">Add Reservation</button>
+    <button class="btn" onclick="location.href='view-reservation.html'">View Reservation</button>
+    <button class="btn" onclick="location.href='bill.html'">Calculate / Print Bill</button>
+    <button class="btn" onclick="location.href='help.html'">Help</button>
 
     <button class="btn" onclick="logout()">Logout (Exit)</button>
   </div>
@@ -27,14 +27,10 @@
   <pre id="out"></pre>
 
   <script>
-    function go(page) {
-      window.location.href = page;
-    }
-
     async function loadUser() {
       const res = await fetch('api/me');
       if (!res.ok) {
-        window.location.href = 'login.html';
+        location.href = 'login.html';
         return;
       }
       const data = await res.json();
@@ -45,7 +41,7 @@
     async function logout() {
       const res = await fetch('api/logout', { method: 'POST' });
       document.getElementById('out').textContent = await res.text();
-      window.location.href = 'login.html';
+      location.href = 'login.html';
     }
 
     loadUser();
