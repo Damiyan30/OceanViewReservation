@@ -1,10 +1,20 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-    <head>
-        <title>Start Page</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    </head>
-    <body>
-        <h1>Hello World!</h1>
-    </body>
+<head>
+  <meta charset="utf-8" />
+  <title>OceanViewReservation Smoke Test</title>
+</head>
+<body>
+  <h2>OceanViewReservation Smoke Test</h2>
+  <button id="btn">Call /api/status</button>
+  <pre id="out"></pre>
+
+  <script>
+    document.getElementById('btn').addEventListener('click', async () => {
+      const res = await fetch('api/status'); // relative path is correct
+      const data = await res.json();
+      document.getElementById('out').textContent = JSON.stringify(data, null, 2);
+    });
+  </script>
+</body>
 </html>
