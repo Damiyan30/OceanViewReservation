@@ -1,14 +1,8 @@
 package com.oceanviewreservation.api;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonNull;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.JsonSerializer;
 import com.oceanviewreservation.model.Reservation;
 import com.oceanviewreservation.service.ReservationService;
-import java.io.BufferedReader;
+import com.oceanviewreservation.util.JsonUtil;
 import java.io.IOException;
 import java.time.LocalDate;
 import javax.servlet.annotation.WebServlet;
@@ -18,14 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 
 @WebServlet("/api/reservations")
 public class ReservationsServlet extends HttpServlet {
-
-    // ✅ Gson configured for Java 21 + LocalDate
-    private static final Gson gson = new GsonBuilder()
-            .registerTypeAdapter(LocalDate.class, (JsonSerializer<LocalDate>) (src, typeOfSrc, context) ->
-                    src == null ? JsonNull.INSTANCE : new JsonPrimitive(src.toString()))
-            .registerTypeAdapter(LocalDate.class, (JsonDeserializer<LocalDate>) (json, typeOfT, context) ->
-                    (json == null || json.isJsonNull()) ? null : LocalDate.parse(json.getAsString()))
-            .create();
 
     private final ReservationService service = new ReservationService();
 
@@ -41,11 +27,8 @@ public class ReservationsServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        resp.setContentType("application/json");
-        resp.setCharacterEncoding("UTF-8");
-
-        try (BufferedReader reader = req.getReader()) {
-            CreateReservationRequest body = gson.fromJson(reader, CreateReservationRequest.class);
+        try {
+            CreateReservationRequest body = JsonUtil.readJson(req, CreateReservationRequest.class);
 
             if (body == null
                     || body.guestName == null || body.guestName.isBlank()
@@ -53,8 +36,8 @@ public class ReservationsServlet extends HttpServlet {
                     || body.checkIn == null || body.checkIn.isBlank()
                     || body.checkOut == null || body.checkOut.isBlank()
                     || body.typeId <= 0) {
+                JsonUtil.writeRawJson(resp, "{\"create\":\"fail\",\"error\":\"Missing required fields\"}");
                 resp.setStatus(400);
-                resp.getWriter().write("{\"create\":\"fail\",\"error\":\"Missing required fields\"}");
                 return;
             }
 
@@ -68,26 +51,23 @@ public class ReservationsServlet extends HttpServlet {
             r.checkOut = LocalDate.parse(body.checkOut);
 
             int id = service.addReservation(r);
-            resp.getWriter().write("{\"create\":\"ok\",\"reservationId\":" + id + "}");
+            JsonUtil.writeRawJson(resp, "{\"create\":\"ok\",\"reservationId\":" + id + "}");
 
         } catch (IllegalArgumentException ex) {
             resp.setStatus(400);
-            resp.getWriter().write("{\"create\":\"fail\",\"error\":\"" + ex.getMessage().replace("\"", "'") + "\"}");
+            JsonUtil.writeRawJson(resp, "{\"create\":\"fail\",\"error\":\"" + ex.getMessage().replace("\"", "'") + "\"}");
         } catch (Exception e) {
             resp.setStatus(500);
-            resp.getWriter().write("{\"create\":\"fail\",\"error\":\"" + (e.getMessage() + "").replace("\"", "'") + "\"}");
+            JsonUtil.writeRawJson(resp, "{\"create\":\"fail\",\"error\":\"" + (e.getMessage() + "").replace("\"", "'") + "\"}");
         }
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        resp.setContentType("application/json");
-        resp.setCharacterEncoding("UTF-8");
-
         String idStr = req.getParameter("id");
         if (idStr == null || idStr.isBlank()) {
             resp.setStatus(400);
-            resp.getWriter().write("{\"error\":\"Missing id parameter\"}");
+            JsonUtil.writeError(resp, 400, "Missing id parameter");
             return;
         }
 
@@ -96,20 +76,17 @@ public class ReservationsServlet extends HttpServlet {
             Reservation r = service.getReservation(id);
 
             if (r == null) {
-                resp.setStatus(404);
-                resp.getWriter().write("{\"error\":\"Reservation not found\"}");
+                JsonUtil.writeError(resp, 404, "Reservation not found");
                 return;
             }
 
-            // ✅ Now LocalDate fields serialize safely as "YYYY-MM-DD"
-            resp.getWriter().write(gson.toJson(r));
+            // LocalDate serializes safely here because JsonUtil's Gson is configured
+            JsonUtil.writeJson(resp, r);
 
         } catch (NumberFormatException ex) {
-            resp.setStatus(400);
-            resp.getWriter().write("{\"error\":\"Invalid id\"}");
+            JsonUtil.writeError(resp, 400, "Invalid id");
         } catch (Exception e) {
-            resp.setStatus(500);
-            resp.getWriter().write("{\"error\":\"" + (e.getMessage() + "").replace("\"", "'") + "\"}");
+            JsonUtil.writeError(resp, 500, e.getMessage());
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.oceanviewreservation.api;
 
+import com.oceanviewreservation.util.JsonUtil;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,8 +14,6 @@ public class LogoutServlet extends HttpServlet {
         if (req.getSession(false) != null) {
             req.getSession(false).invalidate();
         }
-        resp.setContentType("application/json");
-        resp.setCharacterEncoding("UTF-8");
-        resp.getWriter().write("{\"logout\":\"ok\"}");
+        JsonUtil.writeRawJson(resp, "{\"logout\":\"ok\"}");
     }
 }
