@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>OceanViewReservation - Dashboard</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; }
+    .card { max-width: 520px; padding: 16px; border: 1px solid #ccc; border-radius: 8px; }
+    .btn { display: block; width: 100%; padding: 12px; margin: 10px 0; cursor: pointer; }
+    .small { color: #666; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <h2>OceanViewReservation - Dashboard</h2>
+
+  <div class="card">
+    <div id="user" class="small">Loading user...</div>
+
+    <button class="btn" onclick="go('add-reservation.html')">Add Reservation</button>
+    <button class="btn" onclick="go('view-reservation.html')">View Reservation</button>
+    <button class="btn" onclick="go('bill.html')">Calculate / Print Bill</button>
+    <button class="btn" onclick="go('help.html')">Help</button>
+
+    <button class="btn" onclick="logout()">Logout (Exit)</button>
+  </div>
+
+  <pre id="out"></pre>
+
+  <script>
+    function go(page) {
+      window.location.href = page;
+    }
+
+    async function loadUser() {
+      const res = await fetch('api/me');
+      if (!res.ok) {
+        window.location.href = 'login.html';
+        return;
+      }
+      const data = await res.json();
+      document.getElementById('user').textContent =
+        `Logged in as: ${data.username} (${data.role})`;
+    }
+
+    async function logout() {
+      const res = await fetch('api/logout', { method: 'POST' });
+      document.getElementById('out').textContent = await res.text();
+      window.location.href = 'login.html';
+    }
+
+    loadUser();
+  </script>
+</body>
+</html>

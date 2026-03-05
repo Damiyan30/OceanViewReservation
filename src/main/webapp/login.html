@@ -3,38 +3,82 @@
 <head>
   <meta charset="utf-8" />
   <title>OceanViewReservation - Login</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; }
+    .card { max-width: 420px; padding: 16px; border: 1px solid #ccc; border-radius: 8px; }
+    input { width: 100%; padding: 10px; margin: 6px 0 12px; box-sizing: border-box; }
+    button { width: 100%; padding: 12px; cursor: pointer; }
+    .err { color: #b00020; white-space: pre-wrap; margin-top: 10px; }
+    .ok { color: #0b6b0b; white-space: pre-wrap; margin-top: 10px; }
+  </style>
 </head>
 <body>
-  <h2>Login</h2>
+  <h2>OceanViewReservation - Login</h2>
 
-  <label>Username</label><br>
-  <input id="username"><br><br>
+  <div class="card">
+    <label>Username</label>
+    <input id="username" autocomplete="username" />
 
-  <label>Password</label><br>
-  <input id="password" type="password"><br><br>
+    <label>Password</label>
+    <input id="password" type="password" autocomplete="current-password" />
 
-  <button id="btn">Login</button>
-  <pre id="out"></pre>
+    <button id="btn">Login</button>
+
+    <div id="msg" class=""></div>
+  </div>
 
   <script>
-    document.getElementById('btn').addEventListener('click', async () => {
-      const username = document.getElementById('username').value;
+    const msg = document.getElementById('msg');
+
+    function show(text, ok = false) {
+      msg.className = ok ? 'ok' : 'err';
+      msg.textContent = text;
+    }
+
+    async function alreadyLoggedInCheck() {
+      // If session exists, /api/me should be allowed and return 200
+      const res = await fetch('api/me');
+      if (res.ok) {
+        window.location.href = 'dashboard.html';
+      }
+    }
+
+    async function login() {
+      msg.textContent = '';
+
+      const username = document.getElementById('username').value.trim();
       const password = document.getElementById('password').value;
+
+      if (!username || !password) {
+        show('Please enter username and password.');
+        return;
+      }
 
       const res = await fetch('api/login', {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
       });
 
-      const txt = await res.text();
-      document.getElementById('out').textContent = txt;
+      const text = await res.text();
 
       if (res.ok) {
-        // Next milestone will be dashboard.html
-        window.location.href = 'index.html';
+        show(text, true);
+        window.location.href = 'dashboard.html';
+      } else {
+        show(text);
       }
+    }
+
+    document.getElementById('btn').addEventListener('click', login);
+
+    // Press Enter to login
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') login();
     });
+
+    // Auto redirect if already logged in
+    alreadyLoggedInCheck();
   </script>
 </body>
 </html>
