@@ -1,79 +1,114 @@
-<!doctype html>
-<html>
-<head>
-  <meta charset="utf-8" />
-  <title>Dashboard • OceanViewReservation</title>
-  <link rel="stylesheet" href="assets/styles.css">
-  <script src="assets/app.js" defer></script>
-</head>
-<body>
-  <div class="container">
-    <div class="topbar">
-      <div class="brand">
-        <div class="logo"></div>
-        <div>
-          <h1>OceanViewReservation</h1>
-          <div class="sub">Dashboard</div>
-        </div>
-      </div>
-      <div class="nav">
-        <span class="badge" data-user-badge>Loading…</span>
-        <a class="badge" href="help.html">Help</a>
-        <button class="btn btn-secondary no-print" id="btnLogout">Logout</button>
-      </div>
-    </div>
+<!DOCTYPE html>
 
-    <div class="main">
-      <div class="card">
-        <h2>Quick actions</h2>
-        <p>Create and manage reservations, and print invoices.</p>
-
-        <div class="kpis">
-          <div class="kpi">
-            <div class="t">Create reservation</div>
-            <div class="v">Add</div>
-            <div class="actions">
-              <button class="btn btn-primary" onclick="location.href='add-reservation.html'">Add Reservation</button>
-            </div>
-          </div>
-          <div class="kpi">
-            <div class="t">Find reservation</div>
-            <div class="v">View</div>
-            <div class="actions">
-              <button class="btn btn-secondary" onclick="location.href='view-reservation.html'">View Reservation</button>
-            </div>
-          </div>
-          <div class="kpi">
-            <div class="t">Invoice</div>
-            <div class="v">Bill</div>
-            <div class="actions">
-              <button class="btn btn-secondary" onclick="location.href='bill.html'">Calculate / Print</button>
-            </div>
-          </div>
-        </div>
-
-        <hr class="hr">
-
-        <div class="actions">
-          <button class="btn btn-secondary" onclick="location.href='help.html'">Help</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    (async ()=>{
-      await requireAuth();
-      $("btnLogout").addEventListener("click", async ()=>{
-        try{
-          await api("api/logout", {method:"POST"});
-          toast("Signed out", "You have been logged out.", "ok");
-          location.href = "login.html";
-        }catch(e){
-          toast("Error", e.message, "err");
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>OceanView Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="assets/styles.css" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13ecec",
+                        "background-light": "#f6f8f8",
+                        "background-dark": "#102222",
+                        "surface-dark": "#1a2e2e",
+                        "border-dark": "#283939",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
         }
-      });
-    })();
-  </script>
-</body>
-</html>
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen flex flex-col">
+<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-border-dark bg-surface-dark/50 backdrop-blur-sm px-6 py-4 md:px-10">
+<div class="flex items-center gap-4 text-primary">
+<div class="size-8 flex items-center justify-center bg-primary/10 rounded-lg">
+<span class="material-symbols-outlined text-2xl">waves</span>
+</div>
+<div>
+<h2 class="text-slate-100 text-lg font-bold leading-tight tracking-tight">OceanView Reservation</h2>
+<p class="text-slate-400 text-xs">Dashboard</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<form id="logoutForm">
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 bg-primary text-background-dark text-sm font-bold transition-all hover:bg-primary/90" type="submit">
+<span>Logout</span>
+</button>
+</form>
+<div class="flex items-center gap-3 bg-surface-dark p-1 pr-4 rounded-full border border-border-dark" data-user-badge="">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-8 border border-primary/30" style="background-image: linear-gradient(135deg, rgba(19,236,236,.25), rgba(0,0,0,0));"></div>
+<span class="text-xs font-semibold text-slate-300 hidden sm:inline">User</span>
+</div>
+</div>
+</header>
+
+<main class="flex-1 flex justify-center py-8 md:py-16 px-4">
+<div class="layout-content-container flex flex-col max-w-[960px] w-full gap-6">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<a class="group flex items-center gap-4 bg-surface-dark/50 border border-border-dark rounded-xl p-6 hover:border-primary/40 transition-all" href="add-reservation.html">
+<div class="size-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-3xl">add_circle</span>
+</div>
+<div class="flex-1">
+<h3 class="text-slate-100 font-bold text-lg group-hover:text-primary transition-colors">Add Reservation</h3>
+<p class="text-slate-400 text-sm">Create a new reservation record</p>
+</div>
+<span class="material-symbols-outlined text-slate-500 group-hover:text-primary transition-colors">arrow_forward</span>
+</a>
+
+<a class="group flex items-center gap-4 bg-surface-dark/50 border border-border-dark rounded-xl p-6 hover:border-primary/40 transition-all" href="view-reservation.html">
+<div class="size-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-3xl">search</span>
+</div>
+<div class="flex-1">
+<h3 class="text-slate-100 font-bold text-lg group-hover:text-primary transition-colors">View Reservation</h3>
+<p class="text-slate-400 text-sm">Search reservation by ID</p>
+</div>
+<span class="material-symbols-outlined text-slate-500 group-hover:text-primary transition-colors">arrow_forward</span>
+</a>
+
+<a class="group flex items-center gap-4 bg-surface-dark/50 border border-border-dark rounded-xl p-6 hover:border-primary/40 transition-all" href="bill.html">
+<div class="size-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-3xl">receipt_long</span>
+</div>
+<div class="flex-1">
+<h3 class="text-slate-100 font-bold text-lg group-hover:text-primary transition-colors">Billing</h3>
+<p class="text-slate-400 text-sm">Calculate / print invoice</p>
+</div>
+<span class="material-symbols-outlined text-slate-500 group-hover:text-primary transition-colors">arrow_forward</span>
+</a>
+
+<a class="group flex items-center gap-4 bg-surface-dark/50 border border-border-dark rounded-xl p-6 hover:border-primary/40 transition-all" href="help.html">
+<div class="size-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-3xl">help</span>
+</div>
+<div class="flex-1">
+<h3 class="text-slate-100 font-bold text-lg group-hover:text-primary transition-colors">Help</h3>
+<p class="text-slate-400 text-sm">Usage guide & troubleshooting</p>
+</div>
+<span class="material-symbols-outlined text-slate-500 group-hover:text-primary transition-colors">arrow_forward</span>
+</a>
+</div>
+</div>
+</main>
+
+<footer class="border-t border-border-dark py-6 px-10 text-center text-slate-500 text-sm">
+                © 2024 OceanView Reservation Systems.
+            </footer>
+</div>
+</div>
+<script src="assets/app.js"></script>
+</body></html>

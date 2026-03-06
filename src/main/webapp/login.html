@@ -1,72 +1,92 @@
-<!doctype html>
-<html>
-<head>
-  <meta charset="utf-8" />
-  <title>Login • OceanViewReservation</title>
-  <link rel="stylesheet" href="assets/styles.css">
-  <script src="assets/app.js" defer></script>
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ocean Portal - Login</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="assets/styles.css" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13ecec",
+                        "background-light": "#f6f8f8",
+                        "background-dark": "#102222",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
 </head>
-<body>
-  <div class="container">
-    <div class="topbar">
-      <div class="brand">
-        <div class="logo"></div>
-        <div>
-          <h1>OceanViewReservation</h1>
-          <div class="sub">Secure staff login</div>
-        </div>
-      </div>
-      <div class="nav">
-        <a class="badge" href="help.html">Help</a>
-      </div>
-    </div>
-
-    <div class="main card">
-      <h2>Login</h2>
-      <div class="grid two">
-        <div class="field">
-          <label>Username</label>
-          <input class="input" id="username" placeholder="e.g., admin" autocomplete="username">
-        </div>
-        <div class="field">
-          <label>Password</label>
-          <input class="input" id="password" type="password" placeholder="••••••••" autocomplete="current-password">
-        </div>
-      </div>
-
-      <div class="actions">
-        <button class="btn btn-primary" id="btnLogin">Sign in</button>
-        <a class="btn btn-secondary" href="index.html" style="display:inline-block;">Home</a>
-      </div>
-
-      <div id="out" class="mono" style="display:none;"></div>
-    </div>
-  </div>
-
-  <script>
-    $("btnLogin").addEventListener("click", async ()=>{
-      const username = $("username").value.trim();
-      const password = $("password").value;
-
-      if(!username || !password){
-        toast("Missing info", "Enter username and password.", "warn");
-        return;
-      }
-
-      try{
-        const data = await api("api/login", {
-          method:"POST",
-          headers: {"Content-Type":"application/json"},
-          body: JSON.stringify({username, password})
-        });
-        toast("Welcome", `Logged in as ${username}`, "ok");
-        location.href = "dashboard.html";
-      }catch(e){
-        $("out").style.display = "block";
-        $("out").textContent = e.message;
-        toast("Login failed", e.message, "err");
-      }
-    });
-  </script>
-</body>
-</html>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen flex flex-col">
+<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-slate-800 px-6 py-4 md:px-10">
+<div class="flex items-center gap-3 text-primary">
+<div class="size-6">
+<svg fill="currentColor" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 45.8096C19.6865 45.8096 15.4698 44.5305 11.8832 42.134C8.29667 39.7376 5.50128 36.3314 3.85056 32.3462C2.19985 28.361 1.76794 23.9758 2.60947 19.7452C3.451 15.5145 5.52816 11.6284 8.57829 8.5783C11.6284 5.52817 15.5145 3.45101 19.7452 2.60948C23.9758 1.76795 28.361 2.19986 32.3462 3.85057C36.3314 5.50129 39.7376 8.29668 42.134 11.8833C44.5305 15.4698 45.8096 19.6865 45.8096 24L24 24L24 45.8096Z"></path>
+</svg>
+</div>
+<h2 class="text-slate-900 dark:text-slate-100 text-lg font-bold leading-tight tracking-tight">OceanView</h2>
+</div>
+<a class="flex min-w-[84px] cursor-pointer items-center justify-center rounded-xl h-10 px-4 bg-primary/10 text-primary text-sm font-bold border border-primary/20 hover:bg-primary/20 transition-colors" href="help.html"><span class="truncate">Help</span></a>
+</header>
+<main class="flex-1 flex items-center justify-center p-6 bg-gradient-to-b from-background-dark to-slate-950">
+<div class="w-full max-w-md">
+<div class="bg-slate-900/50 border border-slate-800 rounded-xl overflow-hidden shadow-2xl backdrop-blur-sm">
+<div class="h-32 w-full bg-cover bg-center relative" style="background-image: linear-gradient(135deg, rgba(19,236,236,.18), rgba(0,0,0,0));">
+<div class="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent"></div>
+</div>
+<div class="px-8 pb-10 pt-4 flex flex-col gap-6">
+<div class="text-center">
+<h1 class="text-3xl font-black text-slate-100 mb-2">Welcome Back</h1>
+<p class="text-slate-400 text-sm">Login to continue</p>
+</div>
+<form class="flex flex-col gap-5" id="loginForm">
+<div class="flex flex-col gap-2">
+<label class="text-slate-300 text-sm font-medium px-1" for="username">Username</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-xl">person</span>
+<input class="w-full pl-12 pr-4 h-14 rounded-xl bg-slate-800/50 border border-slate-700 text-slate-100 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-slate-600" id="username" name="username" placeholder="Enter your username" required="" type="text"/>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-slate-300 text-sm font-medium px-1" for="password">Password</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-xl">lock</span>
+<input class="w-full pl-12 pr-4 h-14 rounded-xl bg-slate-800/50 border border-slate-700 text-slate-100 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-slate-600" id="password" name="password" placeholder="••••••••" required="" type="password"/>
+</div>
+</div>
+<button class="mt-2 w-full h-14 bg-primary hover:bg-primary/90 text-background-dark font-bold rounded-xl shadow-lg shadow-primary/20 transition-all active:scale-[0.98] flex items-center justify-center gap-2" id="btnLogin" type="submit">
+<span>Log In</span>
+<span class="material-symbols-outlined">login</span>
+</button>
+</form>
+<pre class="hidden mt-4 p-4 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-xs overflow-auto font-mono" id="out"></pre>
+</div>
+</div>
+</div>
+</main>
+<footer class="p-6 text-center text-slate-600 text-xs">
+                © 2024 Ocean Portal
+            </footer>
+</div>
+</div>
+<div class="fixed bottom-6 right-6 hidden transform translate-y-10 opacity-0 transition-all duration-300 pointer-events-none" id="toast">
+<div class="bg-red-500 text-white px-6 py-3 rounded-xl shadow-xl flex items-center gap-3">
+<span class="material-symbols-outlined">error</span>
+<span class="font-medium text-sm" id="toastMessage">Login failed</span>
+</div>
+</div>
+<script src="assets/app.js"></script>
+</body></html>

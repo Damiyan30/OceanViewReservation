@@ -1,150 +1,110 @@
-<!doctype html>
-<html>
-<head>
-  <meta charset="utf-8" />
-  <title>Add Reservation • OceanViewReservation</title>
-  <link rel="stylesheet" href="assets/styles.css">
-  <script src="assets/app.js" defer></script>
-</head>
-<body>
-  <div class="container">
-    <div class="topbar">
-      <div class="brand">
-        <div class="logo"></div>
-        <div>
-          <h1>OceanViewReservation</h1>
-          <div class="sub">Add Reservation</div>
-        </div>
-      </div>
-      <div class="nav">
-        <span class="badge" data-user-badge>Loading…</span>
-        <a class="badge" href="dashboard.html">Dashboard</a>
-        <a class="badge" href="help.html">Help</a>
-      </div>
-    </div>
+<!DOCTYPE html>
 
-    <div class="main card">
-      <h2>Guest details</h2>
-
-      <div class="grid two">
-        <div class="field">
-          <label>Guest Name *</label>
-          <input class="input" id="guestName" placeholder="e.g., John Silva">
-        </div>
-        <div class="field">
-          <label>Contact No *</label>
-          <input class="input" id="contactNo" placeholder="e.g., 0771234567">
-        </div>
-      </div>
-
-      <div class="grid two">
-        <div class="field">
-          <label>Email (optional)</label>
-          <input class="input" id="email" placeholder="e.g., john@gmail.com">
-        </div>
-        <div class="field">
-          <label>Address (optional)</label>
-          <input class="input" id="address" placeholder="e.g., Colombo">
-        </div>
-      </div>
-
-      <hr class="hr">
-
-      <h2>Reservation</h2>
-      <div class="grid three">
-        <div class="field">
-          <label>Room Type *</label>
-          <select class="select" id="typeId"></select>
-        </div>
-        <div class="field">
-          <label>Check-in *</label>
-          <input class="input" id="checkIn" type="date">
-        </div>
-        <div class="field">
-          <label>Check-out *</label>
-          <input class="input" id="checkOut" type="date">
-        </div>
-      </div>
-
-      <div class="actions">
-        <button class="btn btn-primary" id="btnSave">Save Reservation</button>
-        <button class="btn btn-secondary" id="btnClear" type="button">Clear</button>
-      </div>
-
-      <div id="out" class="mono" style="display:none;"></div>
-    </div>
-  </div>
-
-  <script>
-    const outBox = $("out");
-    const out = (t)=>{ outBox.style.display="block"; outBox.textContent=t; };
-
-    async function loadTypes(){
-      const types = await api("api/room-types");
-      const sel = $("typeId");
-      sel.innerHTML = "";
-      types.forEach(t=>{
-        const opt = document.createElement("option");
-        opt.value = t.typeId;
-        opt.textContent = `${t.typeName} (Rs. ${money(t.nightlyRate)}/night)`;
-        sel.appendChild(opt);
-      });
-    }
-
-    function clearForm(){
-      ["guestName","contactNo","email","address","checkIn","checkOut"].forEach(id=>$(id).value="");
-      outBox.style.display="none";
-      outBox.textContent="";
-    }
-
-    (async ()=>{
-      await requireAuth();
-      await loadTypes();
-
-      $("btnClear").addEventListener("click", clearForm);
-
-      $("btnSave").addEventListener("click", async ()=>{
-        const guestName = $("guestName").value.trim();
-        const contactNo = $("contactNo").value.trim();
-        const email = $("email").value.trim();
-        const address = $("address").value.trim();
-        const typeId = parseInt($("typeId").value, 10);
-        const checkIn = $("checkIn").value;
-        const checkOut = $("checkOut").value;
-
-        // Client-side validation
-        if(!guestName) return toast("Missing", "Guest Name is required.", "warn");
-        if(!contactNo) return toast("Missing", "Contact No is required.", "warn");
-        if(!checkIn) return toast("Missing", "Check-in is required.", "warn");
-        if(!checkOut) return toast("Missing", "Check-out is required.", "warn");
-        if(checkOut <= checkIn) return toast("Invalid dates", "Check-out must be after check-in.", "warn");
-
-        const digitsOnly = contactNo.replace(/\D/g,'');
-        if(digitsOnly.length < 9) return toast("Invalid", "Contact No seems too short.", "warn");
-        if(email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return toast("Invalid", "Email format is invalid.", "warn");
-
-        try{
-          const res = await api("api/reservations", {
-            method:"POST",
-            headers: {"Content-Type":"application/json"},
-            body: JSON.stringify({guestName, contactNo, email, address, typeId, checkIn, checkOut})
-          });
-          out(JSON.stringify(res, null, 2));
-          toast("Saved", `Reservation created. ID: ${res.reservationId}`, "ok");
-
-          // quick next actions
-          const id = res.reservationId;
-          setTimeout(()=> {
-            if(confirm(`Reservation created (ID: ${id}). View it now?`)){
-              location.href = `view-reservation.html#id=${encodeURIComponent(id)}`;
-            }
-          }, 250);
-        }catch(e){
-          out(e.message);
-          toast("Save failed", e.message, "err");
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Add Reservation</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="assets/styles.css" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13ecec",
+                        "background-light": "#f6f8f8",
+                        "background-dark": "#102222",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
         }
-      });
-    })();
-  </script>
-</body>
-</html>
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen flex flex-col">
+<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-slate-800 px-6 py-4 md:px-10">
+<div class="flex items-center gap-3 text-primary">
+<div class="size-6">
+<svg fill="currentColor" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 45.8096C19.6865 45.8096 15.4698 44.5305 11.8832 42.134C8.29667 39.7376 5.50128 36.3314 3.85056 32.3462C2.19985 28.361 1.76794 23.9758 2.60947 19.7452C3.451 15.5145 5.52816 11.6284 8.57829 8.5783C11.6284 5.52817 15.5145 3.45101 19.7452 2.60948C23.9758 1.76795 28.361 2.19986 32.3462 3.85057C36.3314 5.50129 39.7376 8.29668 42.134 11.8833C44.5305 15.4698 45.8096 19.6865 45.8096 24L24 24L24 45.8096Z"></path>
+</svg>
+</div>
+<h2 class="text-slate-900 dark:text-slate-100 text-lg font-bold leading-tight tracking-tight">OceanView</h2>
+</div>
+<div class="flex gap-2">
+<a class="flex min-w-[84px] cursor-pointer items-center justify-center rounded-xl h-10 px-4 bg-primary/10 text-primary text-sm font-bold border border-primary/20 hover:bg-primary/20 transition-colors" href="dashboard.html"><span class="truncate">Dashboard</span></a>
+</div>
+</header>
+
+<main class="flex-1 flex items-center justify-center p-6 bg-gradient-to-b from-background-dark to-slate-950">
+<div class="w-full max-w-2xl bg-slate-900/50 border border-slate-800 rounded-xl shadow-2xl p-8 backdrop-blur-sm">
+<h1 class="text-2xl md:text-3xl font-black text-slate-100 mb-2">Add Reservation</h1>
+<p class="text-slate-400 text-sm mb-6">Fill required fields and save.</p>
+
+<form class="flex flex-col gap-5" id="reservationForm">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div>
+<label class="text-slate-300 text-sm font-medium px-1">Guest Name</label>
+<input class="w-full h-12 rounded-xl bg-slate-800/50 border border-slate-700 text-slate-100 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" id="guestName" required type="text"/>
+</div>
+<div>
+<label class="text-slate-300 text-sm font-medium px-1">Contact No</label>
+<input class="w-full h-12 rounded-xl bg-slate-800/50 border border-slate-700 text-slate-100 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" id="contactNo" required type="text"/>
+</div>
+<div>
+<label class="text-slate-300 text-sm font-medium px-1">Email (optional)</label>
+<input class="w-full h-12 rounded-xl bg-slate-800/50 border border-slate-700 text-slate-100 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" id="email" type="email"/>
+</div>
+<div>
+<label class="text-slate-300 text-sm font-medium px-1">Address (optional)</label>
+<input class="w-full h-12 rounded-xl bg-slate-800/50 border border-slate-700 text-slate-100 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" id="address" type="text"/>
+</div>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<div class="md:col-span-3">
+<label class="text-slate-300 text-sm font-medium px-1">Room Type</label>
+<select class="w-full h-12 rounded-xl bg-slate-800/50 border border-slate-700 text-slate-100 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" id="typeId"></select>
+</div>
+<div>
+<label class="text-slate-300 text-sm font-medium px-1">Check-in</label>
+<input class="w-full h-12 rounded-xl bg-slate-800/50 border border-slate-700 text-slate-100 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" id="checkIn" required type="date"/>
+</div>
+<div>
+<label class="text-slate-300 text-sm font-medium px-1">Check-out</label>
+<input class="w-full h-12 rounded-xl bg-slate-800/50 border border-slate-700 text-slate-100 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" id="checkOut" required type="date"/>
+</div>
+</div>
+
+<div class="flex gap-3">
+<button class="h-12 px-6 bg-primary hover:bg-primary/90 text-background-dark font-bold rounded-xl shadow-lg shadow-primary/20 transition-all active:scale-[0.98]" id="btnSave" type="submit">Save Reservation</button>
+<button class="h-12 px-6 bg-slate-800 hover:bg-slate-700 text-slate-100 font-bold rounded-xl transition-all active:scale-[0.98]" id="btnClear" type="reset">Clear</button>
+</div>
+</form>
+
+<div class="mt-8 hidden animate-in fade-in slide-in-from-top-4" id="out">
+<div class="p-5 rounded-xl border border-primary/20 bg-primary/10">
+<h3 class="text-slate-100 font-bold">Reservation Created</h3>
+<p class="text-slate-400 text-sm mt-1">Reservation ID:</p>
+<div class="text-primary font-black text-xl mt-2" id="reservationIdDisplay">RES-00000</div>
+<a class="inline-flex mt-4 items-center gap-2 h-10 px-4 bg-primary text-background-dark font-bold rounded-xl hover:bg-primary/90 transition-all" href="#" id="viewReservationLink">
+<span class="material-symbols-outlined text-xl">open_in_new</span>
+<span>View Full Details</span>
+</a>
+</div>
+</div>
+
+</div>
+</main>
+</div>
+</div>
+<script src="assets/app.js"></script>
+</body></html>

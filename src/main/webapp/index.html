@@ -1,41 +1,62 @@
-<!doctype html>
-<html>
-<head>
-  <meta charset="utf-8" />
-  <title>OceanViewReservation</title>
-  <link rel="stylesheet" href="assets/styles.css">
-  <script src="assets/app.js" defer></script>
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>OceanView Reservation | Redirecting</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="assets/styles.css" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13ecec",
+                        "background-light": "#f6f8f8",
+                        "background-dark": "#102222",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
 </head>
-<body>
-  <div class="container">
-    <div class="topbar">
-      <div class="brand">
-        <div class="logo"></div>
-        <div>
-          <h1>OceanViewReservation</h1>
-          <div class="sub">Hotel Reservation System</div>
-        </div>
-      </div>
-      <div class="nav">
-        <span class="badge">v1</span>
-      </div>
-    </div>
-
-    <div class="main card">
-      <h2>Welcome</h2>
-      <p>Redirecting…</p>
-    </div>
-  </div>
-
-  <script>
-    (async ()=>{
-      try{
-        await api("api/me");
-        location.href = "dashboard.html";
-      }catch{
-        location.href = "login.html";
-      }
-    })();
-  </script>
-</body>
-</html>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen flex flex-col">
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<div class="px-6 md:px-40 flex flex-1 justify-center items-center py-5">
+<div class="layout-content-container flex flex-col max-w-[480px] flex-1 bg-white/5 dark:bg-primary/5 p-8 rounded-xl border border-slate-200 dark:border-primary/20 shadow-2xl backdrop-blur-sm">
+<header class="flex flex-col items-center justify-center gap-6 mb-8">
+<div class="flex items-center gap-3 text-primary">
+<div class="size-10 flex items-center justify-center bg-primary/10 rounded-lg">
+<span class="material-symbols-outlined text-3xl">waves</span>
+</div>
+<h2 class="text-slate-900 dark:text-slate-100 text-2xl font-bold leading-tight tracking-tight">OceanView</h2>
+</div>
+</header>
+<div class="flex flex-col items-center gap-6">
+<div class="relative flex items-center justify-center">
+<div class="absolute w-16 h-16 border-4 border-primary/20 rounded-full"></div>
+<div class="w-16 h-16 border-4 border-t-primary border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin"></div>
+</div>
+<div class="text-center space-y-2">
+<p class="text-slate-900 dark:text-slate-100 text-lg font-medium leading-normal">Verifying session</p>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-normal leading-normal">One moment while we prepare your workspace...</p>
+</div>
+<div class="w-full text-red-500 dark:text-red-400 text-xs font-medium text-center min-h-[1rem]" id="out"></div>
+</div>
+<div class="mt-8 pt-6 border-t border-slate-200 dark:border-primary/10">
+<p class="text-slate-400 dark:text-slate-500 text-[10px] uppercase tracking-widest text-center font-bold">Secure Authentication</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script src="assets/app.js"></script>
+</body></html>

@@ -1,67 +1,79 @@
-<!doctype html>
-<html>
-<head>
-  <meta charset="utf-8" />
-  <title>Help • OceanViewReservation</title>
-  <link rel="stylesheet" href="assets/styles.css">
-  <script src="assets/app.js" defer></script>
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Help Center | Platform Guide</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="assets/styles.css" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13ecec",
+                        "background-light": "#f6f8f8",
+                        "background-dark": "#102222",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
 </head>
-<body>
-  <div class="container">
-    <div class="topbar">
-      <div class="brand">
-        <div class="logo"></div>
-        <div>
-          <h1>OceanViewReservation</h1>
-          <div class="sub">Help & Support</div>
-        </div>
-      </div>
-      <div class="nav">
-        <a class="badge" href="dashboard.html">Dashboard</a>
-        <a class="badge" href="login.html">Login</a>
-      </div>
-    </div>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen flex flex-col">
+<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-slate-800 px-6 py-4 md:px-10">
+<div class="flex items-center gap-3 text-primary">
+<div class="size-6">
+<svg fill="currentColor" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 45.8096C19.6865 45.8096 15.4698 44.5305 11.8832 42.134C8.29667 39.7376 5.50128 36.3314 3.85056 32.3462C2.19985 28.361 1.76794 23.9758 2.60947 19.7452C3.451 15.5145 5.52816 11.6284 8.57829 8.5783C11.6284 5.52817 15.5145 3.45101 19.7452 2.60948C23.9758 1.76795 28.361 2.19986 32.3462 3.85057C36.3314 5.50129 39.7376 8.29668 42.134 11.8833C44.5305 15.4698 45.8096 19.6865 45.8096 24L24 24L24 45.8096Z"></path>
+</svg>
+</div>
+<h2 class="text-slate-900 dark:text-slate-100 text-lg font-bold leading-tight tracking-tight">OceanView</h2>
+</div>
+<div class="flex gap-2">
+<a class="flex min-w-[84px] cursor-pointer items-center justify-center rounded-xl h-10 px-4 bg-primary/10 text-primary text-sm font-bold border border-primary/20 hover:bg-primary/20 transition-colors" href="dashboard.html"><span class="truncate">Dashboard</span></a>
+<a class="flex min-w-[84px] cursor-pointer items-center justify-center rounded-xl h-10 px-4 bg-primary text-background-dark text-sm font-bold hover:bg-primary/90 transition-colors" href="login.html"><span class="truncate">Login</span></a>
+</div>
+</header>
 
-    <div class="main card">
-      <h2>How to use the system</h2>
-      <p>Common questions and quick steps.</p>
+<main class="flex-1 flex items-center justify-center p-6 bg-gradient-to-b from-background-dark to-slate-950">
+<div class="w-full max-w-3xl bg-slate-900/50 border border-slate-800 rounded-xl shadow-2xl p-8 backdrop-blur-sm">
+<h1 class="text-2xl md:text-3xl font-black text-slate-100 mb-2">Help & Guide</h1>
+<p class="text-slate-400 text-sm mb-6">Quick steps to use the system.</p>
 
-      <div class="card" style="background:rgba(255,255,255,.04);">
-        <h2 style="font-size:16px;">FAQ</h2>
+<div class="space-y-4 text-slate-300">
+<div class="p-5 rounded-xl border border-slate-800 bg-slate-800/30">
+<h3 class="font-bold text-slate-100">How to Login</h3>
+<p class="text-slate-400 text-sm mt-1">Open login page, enter credentials, then go to dashboard.</p>
+</div>
 
-        <details style="margin:10px 0;">
-          <summary style="cursor:pointer; font-weight:800;">How do I login?</summary>
-          <p>Open <b>login.html</b>, enter your credentials, then you’ll be redirected to the Dashboard.</p>
-        </details>
+<div class="p-5 rounded-xl border border-slate-800 bg-slate-800/30">
+<h3 class="font-bold text-slate-100">Add Reservation</h3>
+<p class="text-slate-400 text-sm mt-1">Fill guest details, choose room type, pick dates, save. Note the Reservation ID.</p>
+</div>
 
-        <details style="margin:10px 0;">
-          <summary style="cursor:pointer; font-weight:800;">How do I add a reservation?</summary>
-          <p>Dashboard → Add Reservation → fill required fields → Save. You’ll get a Reservation ID.</p>
-        </details>
+<div class="p-5 rounded-xl border border-slate-800 bg-slate-800/30">
+<h3 class="font-bold text-slate-100">View Reservation</h3>
+<p class="text-slate-400 text-sm mt-1">Enter Reservation ID to load details and open billing.</p>
+</div>
 
-        <details style="margin:10px 0;">
-          <summary style="cursor:pointer; font-weight:800;">How do I view a reservation?</summary>
-          <p>Dashboard → View Reservation → enter Reservation ID → Search.</p>
-        </details>
+<div class="p-5 rounded-xl border border-slate-800 bg-slate-800/30">
+<h3 class="font-bold text-slate-100">Billing</h3>
+<p class="text-slate-400 text-sm mt-1">Enter Reservation ID → Load → Print.</p>
+</div>
+</div>
 
-        <details style="margin:10px 0;">
-          <summary style="cursor:pointer; font-weight:800;">How do I print a bill?</summary>
-          <p>Dashboard → Bill → enter Reservation ID → Load Bill → Print.</p>
-        </details>
-
-        <details style="margin:10px 0;">
-          <summary style="cursor:pointer; font-weight:800;">Why do I get “Unauthorized”?</summary>
-          <p>Your session expired or you logged out. Login again.</p>
-        </details>
-      </div>
-
-      <hr class="hr">
-
-      <div class="card" style="background:rgba(255,255,255,.04);">
-        <h2 style="font-size:16px;">Support</h2>
-        <p class="mono">oceanviewreservation.support@example.com</p>
-      </div>
-    </div>
-  </div>
-</body>
-</html>
+</div>
+</main>
+</div>
+</div>
+</body></html>
