@@ -1,0 +1,50 @@
+
+# OceanViewReservation
+
+OceanViewReservation is a simple web-based hotel reservation system built using:
+- **Frontend:** HTML, CSS, Vanilla JavaScript
+- **Backend:** Java Servlets (Tomcat 9), JDBC, DAO + Service patterns, MVC-style structure
+- **Database:** MySQL
+- **Build:** Maven
+- **IDE:** NetBeans (recommended)
+
+## Features
+- Login / Logout (session-based)
+- Add Reservation
+- View Reservation by ID
+- Calculate Bill + Print
+- Help page
+
+## Requirements
+- Java **21** (LTS) installed
+- Apache **Tomcat 9.x**
+- MySQL Server (8.x recommended)
+- Maven (NetBeans includes Maven support)
+
+## Project Setup
+
+### 1) Database setup
+1. Open MySQL (NetBeans SQL window or MySQL CLI).
+2. Run the SQL script:
+
+   `src/main/resources/schema.sql`
+
+This will create:
+- `oceanviewreservation_db`
+- tables: `users`, `room_types`, `reservations`
+- default room types
+
+### 2) Create an admin user
+Passwords are stored using **bcrypt**.
+
+1. Run the helper class:
+   `com.oceanviewreservation.tools.GenerateHash`
+
+2. Copy the printed bcrypt hash.
+3. Insert admin user using SQL:
+
+```sql
+USE oceanviewreservation_db;
+
+INSERT INTO users (username, password_hash, role)
+VALUES ('admin', '<PASTE_BCRYPT_HASH_HERE>', 'ADMIN');
