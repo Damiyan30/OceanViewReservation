@@ -92,41 +92,56 @@
     }
 
     document.getElementById('btn').addEventListener('click', async () => {
-      // basic validation
-      const guestName = document.getElementById('guestName').value.trim();
-      const contactNo = document.getElementById('contactNo').value.trim();
-      const checkIn = document.getElementById('checkIn').value;
-      const checkOut = document.getElementById('checkOut').value;
+  const guestName = document.getElementById('guestName').value.trim();
+  const contactNo = document.getElementById('contactNo').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const address = document.getElementById('address').value.trim();
+  const typeId = parseInt(document.getElementById('typeId').value, 10);
+  const checkIn = document.getElementById('checkIn').value;
+  const checkOut = document.getElementById('checkOut').value;
 
-      if (!guestName || !contactNo || !checkIn || !checkOut) {
-        out("Please fill: Guest Name, Contact No, Check-in, Check-out.");
-        return;
-      }
+  // Required checks
+  if (!guestName) { out("Guest Name is required."); return; }
+  if (!contactNo) { out("Contact No is required."); return; }
+  if (!checkIn) { out("Check-in date is required."); return; }
+  if (!checkOut) { out("Check-out date is required."); return; }
+  if (!typeId) { out("Room Type is required."); return; }
 
-      const body = {
-        guestName,
-        contactNo,
-        email: document.getElementById('email').value.trim(),
-        address: document.getElementById('address').value.trim(),
-        typeId: parseInt(document.getElementById('typeId').value, 10),
-        checkIn,
-        checkOut
-      };
+  // Date logic
+  if (checkOut <= checkIn) {
+    out("Invalid dates: Check-out must be after Check-in.");
+    return;
+  }
 
-      const res = await fetch('api/reservations', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(body)
-      });
+  // Basic contact validation (simple + safe)
+  const digitsOnly = contactNo.replace(/\D/g, '');
+  if (digitsOnly.length < 9) {
+    out("Contact No seems too short. Please enter a valid number.");
+    return;
+  }
 
-      const txt = await res.text();
-      out(txt);
+  // Email validation (optional field)
+  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    out("Email format is invalid.");
+    return;
+  }
 
-      if (res.ok) {
-        const data = JSON.parse(txt);
-        alert("Reservation created! ID: " + data.reservationId);
-      }
-    });
+  const body = { guestName, contactNo, email, address, typeId, checkIn, checkOut };
+
+  const res = await fetch('api/reservations', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(body)
+  });
+
+  const txt = await res.text();
+  out(txt);
+
+  if (res.ok) {
+    const data = JSON.parse(txt);
+    alert("Reservation created! ID: " + data.reservationId);
+  }
+});
 
     (async () => {
       // IMPORTANT: This page must be opened via Tomcat URL, not file://
