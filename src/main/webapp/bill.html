@@ -1,15 +1,113 @@
-<!DOCTYPE html>
-<!--
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit this template
--->
+<!doctype html>
 <html>
-    <head>
-        <title>TODO supply a title</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body>
-        <div>TODO write content</div>
-    </body>
+<head>
+  <meta charset="utf-8" />
+  <title>OceanViewReservation - Bill</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; max-width: 820px; }
+    input { padding: 10px; width: 240px; }
+    button { padding: 10px 14px; cursor: pointer; margin-right: 8px; }
+    .top { display:flex; justify-content:space-between; align-items:center; }
+    .card { border: 1px solid #ccc; border-radius: 10px; padding: 16px; margin-top: 16px; }
+    .row { display:flex; justify-content:space-between; padding: 6px 0; border-bottom: 1px dashed #ddd; }
+    .row:last-child { border-bottom: none; }
+    .label { color:#555; }
+    .value { font-weight: 600; }
+    #msg { white-space: pre-wrap; background:#f6f6f6; padding: 12px; border-radius: 8px; margin-top: 12px; }
+
+    /* Print styling */
+    @media print {
+      #controls, #msg, a { display: none !important; }
+      body { margin: 0; max-width: none; }
+      .card { border: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="top">
+    <h2>Calculate / Print Bill</h2>
+    <a href="dashboard.html">Back</a>
+  </div>
+
+  <div id="controls">
+    <label>Reservation ID:</label>
+    <input id="rid" type="number" placeholder="e.g., 1">
+    <button id="btnLoad">Load Bill</button>
+    <button id="btnPrint" disabled>Print</button>
+  </div>
+
+  <div id="msg"></div>
+
+  <div id="billCard" class="card" style="display:none;">
+    <h3>OceanViewReservation - Invoice</h3>
+
+    <div class="row"><div class="label">Reservation ID</div><div class="value" id="b_resId"></div></div>
+    <div class="row"><div class="label">Guest Name</div><div class="value" id="b_guest"></div></div>
+    <div class="row"><div class="label">Contact No</div><div class="value" id="b_contact"></div></div>
+    <div class="row"><div class="label">Room Type</div><div class="value" id="b_roomType"></div></div>
+    <div class="row"><div class="label">Check-in</div><div class="value" id="b_checkIn"></div></div>
+    <div class="row"><div class="label">Check-out</div><div class="value" id="b_checkOut"></div></div>
+    <div class="row"><div class="label">Nights</div><div class="value" id="b_nights"></div></div>
+    <div class="row"><div class="label">Nightly Rate (Rs.)</div><div class="value" id="b_rate"></div></div>
+
+    <div class="row" style="margin-top:10px; border-top:2px solid #000; padding-top:10px;">
+      <div class="label" style="font-size: 18px;">Total (Rs.)</div>
+      <div class="value" style="font-size: 18px;" id="b_total"></div>
+    </div>
+  </div>
+
+  <script>
+    const msg = (t) => document.getElementById('msg').textContent = t;
+
+    async function ensureLoggedIn() {
+      const res = await fetch('api/me');
+      if (!res.ok) {
+        location.href = 'login.html';
+        return false;
+      }
+      return true;
+    }
+
+    function showBill(b) {
+      document.getElementById('billCard').style.display = 'block';
+      document.getElementById('btnPrint').disabled = false;
+
+      document.getElementById('b_resId').textContent = b.reservationId;
+      document.getElementById('b_guest').textContent = b.guestName;
+      document.getElementById('b_contact').textContent = b.contactNo;
+      document.getElementById('b_roomType').textContent = b.roomType;
+
+      document.getElementById('b_checkIn').textContent = b.checkIn;
+      document.getElementById('b_checkOut').textContent = b.checkOut;
+      document.getElementById('b_nights').textContent = b.nights;
+
+      document.getElementById('b_rate').textContent = Number(b.nightlyRate).toFixed(2);
+      document.getElementById('b_total').textContent = Number(b.total).toFixed(2);
+    }
+
+    document.getElementById('btnLoad').addEventListener('click', async () => {
+      const id = document.getElementById('rid').value;
+      document.getElementById('billCard').style.display = 'none';
+      document.getElementById('btnPrint').disabled = true;
+
+      if (!id) { msg("Enter a Reservation ID."); return; }
+
+      const res = await fetch('api/bill?id=' + encodeURIComponent(id));
+      const txt = await res.text();
+
+      if (!res.ok) {
+        msg(txt);
+        return;
+      }
+
+      msg("");
+      const bill = JSON.parse(txt);
+      showBill(bill);
+    });
+
+    document.getElementById('btnPrint').addEventListener('click', () => window.print());
+
+    ensureLoggedIn();
+  </script>
+</body>
 </html>
