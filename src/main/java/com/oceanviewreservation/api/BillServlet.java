@@ -2,9 +2,9 @@ package com.oceanviewreservation.api;
 
 import com.oceanviewreservation.model.Reservation;
 import com.oceanviewreservation.service.ReservationService;
+import com.oceanviewreservation.util.BillingUtil;
 import com.oceanviewreservation.util.JsonUtil;
 import java.io.IOException;
-import java.time.temporal.ChronoUnit;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -50,10 +50,9 @@ public class BillServlet extends HttpServlet {
                 return;
             }
 
-            long nights = ChronoUnit.DAYS.between(r.checkIn, r.checkOut);
-            if (nights < 1) nights = 1; // safety
-
-            double total = nights * r.nightlyRate;
+            // ✅ Use tested billing logic
+            long nights = BillingUtil.nights(r.checkIn, r.checkOut);
+            double total = BillingUtil.total(r.checkIn, r.checkOut, r.nightlyRate);
 
             BillResponse bill = new BillResponse();
             bill.reservationId = r.reservationId;
@@ -75,6 +74,9 @@ public class BillServlet extends HttpServlet {
 
         } catch (NumberFormatException ex) {
             JsonUtil.writeError(resp, 400, "Invalid id");
+        } catch (IllegalArgumentException ex) {
+            // BillingUtil can throw IllegalArgumentException for invalid inputs
+            JsonUtil.writeError(resp, 400, ex.getMessage());
         } catch (Exception e) {
             JsonUtil.writeError(resp, 500, e.getClass().getSimpleName() + ": " + e.getMessage());
         }

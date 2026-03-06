@@ -5,7 +5,18 @@ import com.oceanviewreservation.model.Reservation;
 
 public class ReservationService {
 
-    private final ReservationDAO dao = new ReservationDAO();
+    private final ReservationDAO dao;
+
+    // ✅ Normal app usage (keeps existing behavior)
+    public ReservationService() {
+        this(new ReservationDAO());
+    }
+
+    // ✅ For unit tests (inject a fake/mock DAO)
+    public ReservationService(ReservationDAO dao) {
+        if (dao == null) throw new IllegalArgumentException("DAO required");
+        this.dao = dao;
+    }
 
     public int addReservation(Reservation r) throws Exception {
         if (r == null) {
