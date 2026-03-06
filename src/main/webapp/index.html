@@ -3,10 +3,9 @@
 <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-  <title>OceanViewReservation - Redirecting...</title>
+  <title>OceanView Reservation - Redirecting</title>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
   <script>
     tailwind.config = {
       darkMode: "class",
@@ -20,12 +19,6 @@
           fontFamily: {
             display: ["Plus Jakarta Sans", "sans-serif"],
           },
-          borderRadius: {
-            DEFAULT: "0.25rem",
-            lg: "0.5rem",
-            xl: "0.75rem",
-            full: "9999px",
-          },
         },
       },
     };
@@ -36,44 +29,37 @@
     <div class="layout-container flex h-full grow flex-col">
       <div class="flex flex-1 items-center justify-center px-4 py-5 md:px-40">
         <div class="layout-content-container flex max-w-[480px] flex-1 flex-col items-center">
-          <header class="mb-12 flex flex-col items-center gap-6">
-            <div class="flex items-center gap-3 text-primary">
-              <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
-                <span class="material-symbols-outlined text-4xl">waves</span>
-              </div>
-            </div>
-            <div class="text-center">
-              <h2 class="text-3xl font-bold leading-tight tracking-tight text-slate-900 dark:text-slate-100">OceanViewReservation</h2>
-              <p class="mt-2 text-slate-500 dark:text-slate-400">Premium Coastal Experiences</p>
+          <header class="mb-12 flex flex-col items-center gap-6 text-center">
+            <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-lg font-extrabold text-primary">OV</div>
+            <div>
+              <h2 class="text-3xl font-bold leading-tight tracking-tight text-slate-900 dark:text-slate-100">OceanView Reservation</h2>
+              <p class="mt-2 text-slate-500 dark:text-slate-400">Checking your session and loading the correct page.</p>
             </div>
           </header>
 
           <div class="w-full rounded-2xl border border-slate-200 bg-slate-100 p-8 shadow-xl dark:border-slate-800 dark:bg-slate-800/40">
             <div class="flex flex-col items-center gap-6">
-              <div class="flex h-32 w-full items-center justify-center rounded-lg border border-primary/10 bg-primary/5" style="background-image: linear-gradient(135deg, rgba(13,204,242,0.1) 0%, rgba(16,31,34,0) 100%);">
-                <span class="material-symbols-outlined text-6xl text-primary/30">tsunami</span>
+              <div class="flex h-24 w-full items-center justify-center rounded-xl border border-primary/10 bg-primary/5">
+                <div class="rounded-full bg-primary/10 px-4 py-2 text-sm font-semibold text-primary">Redirecting</div>
               </div>
               <div class="text-center">
                 <h3 class="text-xl font-semibold text-slate-900 dark:text-slate-100">Checking session...</h3>
-                <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">Verifying your credentials</p>
+                <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">Please wait while we verify your access.</p>
               </div>
               <div class="w-full space-y-4">
                 <div class="flex items-center justify-between text-xs font-medium uppercase tracking-wider text-slate-400 dark:text-slate-500">
-                  <span>Syncing</span>
+                  <span>Progress</span>
                   <span data-progress-value>30%</span>
                 </div>
                 <div class="h-2 w-full overflow-hidden rounded-full bg-slate-200 dark:bg-slate-700">
-                  <div class="h-full rounded-full bg-primary transition-all duration-500" data-progress-fill style="width: 30%;"></div>
+                  <div class="h-full rounded-full bg-primary transition-all duration-300" data-progress-fill style="width: 30%;"></div>
                 </div>
               </div>
-              <p class="text-xs italic text-slate-400 dark:text-slate-500">Redirecting you shortly...</p>
+              <p class="text-xs italic text-slate-400 dark:text-slate-500">You will be redirected shortly.</p>
             </div>
           </div>
 
-          <div class="mt-8 flex items-center gap-2 text-slate-400 dark:text-slate-600">
-            <span class="material-symbols-outlined text-sm">lock</span>
-            <span class="text-xs">Secure Encrypted Session</span>
-          </div>
+          <div class="mt-8 text-xs text-slate-400 dark:text-slate-600">Secure session check in progress</div>
         </div>
       </div>
     </div>

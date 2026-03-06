@@ -4,9 +4,8 @@
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
   <title>Help Center | OceanView Reservation</title>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&display=swap" rel="stylesheet"/>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
   <script>
     tailwind.config = {
       darkMode: "class",
@@ -20,154 +19,135 @@
           fontFamily: {
             display: ["Plus Jakarta Sans", "sans-serif"],
           },
-          borderRadius: {
-            DEFAULT: "0.25rem",
-            lg: "0.5rem",
-            xl: "0.75rem",
-            full: "9999px",
-          },
         },
       },
     };
   </script>
+  <style>
+    .glass-panel {
+      background: rgba(16, 31, 34, 0.72);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(13, 204, 242, 0.1);
+    }
+  </style>
 </head>
 <body class="min-h-screen bg-background-light font-display text-slate-900 dark:bg-background-dark dark:text-slate-100">
   <div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
-    <div class="layout-container flex h-full grow flex-col">
-      <header class="sticky top-0 z-50 flex items-center justify-between border-b border-primary/20 bg-background-light px-6 py-4 dark:bg-background-dark md:px-20 lg:px-40">
-        <div class="flex items-center gap-8">
-          <div class="flex items-center gap-3 text-primary">
-            <span class="material-symbols-outlined text-3xl">tsunami</span>
-            <h2 class="text-lg font-bold leading-tight tracking-tight text-slate-900 dark:text-slate-100">OceanView</h2>
-          </div>
-          <nav class="hidden items-center gap-8 md:flex">
-            <a class="text-sm font-medium text-slate-600 transition-colors hover:text-primary dark:text-slate-400" href="dashboard.html">Dashboard</a>
-            <a class="text-sm font-medium text-slate-600 transition-colors hover:text-primary dark:text-slate-400" href="view-reservation.html">Reservations</a>
-            <a class="text-sm font-medium text-slate-600 transition-colors hover:text-primary dark:text-slate-400" href="bill.html">Bills</a>
-          </nav>
-        </div>
-        <div class="flex flex-1 items-center justify-end gap-6">
-          <label class="hidden h-10 min-w-40 max-w-64 flex-col sm:flex">
-            <div class="flex h-full w-full flex-1 items-stretch overflow-hidden rounded-lg">
-              <div class="flex items-center justify-center bg-primary/5 pl-4 text-slate-400 dark:bg-primary/10">
-                <span class="material-symbols-outlined text-xl">search</span>
-              </div>
-              <input class="form-input flex h-full w-full flex-1 border-none bg-primary/5 px-4 pl-2 text-sm placeholder:text-slate-500 focus:ring-1 focus:ring-primary dark:bg-primary/10" placeholder="Search guides..."/>
+    <div class="pointer-events-none absolute inset-0 overflow-hidden">
+      <div class="absolute left-0 top-0 h-72 w-72 rounded-full bg-primary/10 blur-3xl"></div>
+      <div class="absolute bottom-0 right-0 h-96 w-96 rounded-full bg-primary/5 blur-3xl"></div>
+    </div>
+
+    <div class="relative z-10 flex min-h-screen flex-col">
+      <header class="border-b border-primary/10 bg-background-light/70 px-6 py-5 backdrop-blur-md md:px-20 lg:px-40">
+        <div class="mx-auto flex max-w-6xl items-center justify-between gap-4">
+          <div class="flex items-center gap-3">
+            <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/15 text-sm font-extrabold text-primary">OV</div>
+            <div>
+              <p class="text-xs font-semibold uppercase tracking-[0.25em] text-slate-500 dark:text-slate-400">OceanView</p>
+              <h1 class="text-xl font-bold text-slate-900 dark:text-white">Help Center</h1>
             </div>
-          </label>
-          <div class="flex size-10 items-center justify-center overflow-hidden rounded-full border border-primary/30 bg-slate-200 dark:bg-slate-800">
-            <img class="h-full w-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAIwA8KtoPcJzKKNGXuyZ6LvbRdqTY_L4kwaV3-s6AYhKi86aQNbH3FzwlODn_rrOIKFrUH9p5IpMPCZGdG7at9fJYP_LpodbSevxmjrsDBGaG-gGQudIBylEShsHCFOkLhvW1T6qVhyhvHVi6gqIItAX2UTfFmLCiMEAUf_pchLxek1c4iLyRevxUlr7xRKnVqw3cdk1UmeVAPSEHzHN2TWVRQwqVOXopeVCQ3chjghHOnK95vMWcVzUQDGX-R8lsb_rPTIeXCD_s"/>
           </div>
+          <nav class="hidden items-center gap-6 md:flex">
+            <a class="text-sm font-medium text-slate-500 transition-colors hover:text-primary" href="dashboard.html">Dashboard</a>
+            <a class="text-sm font-medium text-slate-500 transition-colors hover:text-primary" href="view-reservation.html">Reservations</a>
+            <a class="text-sm font-medium text-slate-500 transition-colors hover:text-primary" href="bill.html">Billing</a>
+          </nav>
         </div>
       </header>
 
-      <main class="flex-1 px-6 py-8 md:px-20 lg:px-40">
-        <div class="mb-10 flex flex-col gap-4">
-          <div class="flex items-center gap-2 text-sm">
-            <a class="flex items-center gap-1 text-primary hover:underline" href="dashboard.html">
-              <span class="material-symbols-outlined text-sm">arrow_back</span>
-              Back to Dashboard
-            </a>
-            <span class="text-slate-400">/</span>
-            <span class="text-slate-500">Help Center</span>
-          </div>
-          <div class="flex flex-col gap-3 py-4">
-            <h1 class="text-4xl font-black leading-tight tracking-tight text-slate-900 dark:text-white md:text-5xl">How can we help you?</h1>
-            <p class="max-w-2xl text-lg text-slate-600 dark:text-slate-400">Find step-by-step guides and answers to manage your premium ocean resort experience with ease.</p>
+      <main class="mx-auto flex w-full max-w-6xl flex-1 flex-col px-6 py-10 md:px-20 lg:px-40">
+        <div class="glass-panel overflow-hidden rounded-3xl shadow-2xl">
+          <div class="flex flex-col gap-10 p-8 md:p-12 lg:flex-row lg:items-center lg:justify-between">
+            <div class="max-w-2xl">
+              <div class="mb-4 inline-flex rounded-full bg-primary/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.35em] text-primary">Support &amp; Guidance</div>
+              <h2 class="text-4xl font-black leading-tight tracking-tight text-slate-900 dark:text-white md:text-5xl">Everything you need to manage reservations smoothly.</h2>
+              <p class="mt-5 max-w-xl text-base leading-relaxed text-slate-600 dark:text-slate-400">Use this page for booking guidance, billing help, and quick answers for the reservation system.</p>
+              <div class="mt-8 flex flex-wrap gap-4">
+                <a class="rounded-xl bg-primary px-6 py-3 font-bold text-background-dark transition-opacity hover:opacity-90" href="add-reservation.html">Create Reservation</a>
+                <a class="rounded-xl border border-primary/30 bg-primary/10 px-6 py-3 font-bold text-primary transition-colors hover:bg-primary/20" href="view-reservation.html">View Reservations</a>
+              </div>
+            </div>
+            <div class="grid w-full max-w-sm gap-4">
+              <div class="rounded-2xl border border-primary/20 bg-primary/10 p-5">
+                <p class="text-sm font-semibold uppercase tracking-widest text-primary">Reservations</p>
+                <p class="mt-2 text-3xl font-black">24/7</p>
+                <p class="mt-2 text-sm text-slate-500 dark:text-slate-400">Booking access for staff and managers.</p>
+              </div>
+              <div class="rounded-2xl border border-white/10 bg-slate-900/30 p-5">
+                <p class="text-sm font-semibold uppercase tracking-widest text-slate-400">Support</p>
+                <p class="mt-2 text-3xl font-black text-white">Fast</p>
+                <p class="mt-2 text-sm text-slate-500 dark:text-slate-400">Help for login, reservations, and billing.</p>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div class="mb-12 grid grid-cols-1 gap-6 md:grid-cols-3">
-          <div class="flex flex-col gap-3 rounded-xl border border-primary/20 bg-primary/5 p-6">
-            <span class="material-symbols-outlined text-3xl text-primary">calendar_month</span>
-            <h3 class="text-lg font-bold">Booking &amp; Stays</h3>
-            <p class="text-sm text-slate-600 dark:text-slate-400">Learn how to schedule, retrieve, or extend a reservation using the system.</p>
+        <div class="mt-12 grid gap-8 lg:grid-cols-[1.05fr_0.95fr]">
+          <div class="glass-panel rounded-3xl p-8 shadow-xl">
+            <h3 class="mb-6 text-2xl font-bold">Quick Actions</h3>
+            <div class="grid gap-4 md:grid-cols-2">
+              <a class="rounded-2xl border border-primary/10 bg-primary/5 p-5 transition-all hover:border-primary/30 hover:bg-primary/10" href="add-reservation.html">
+                <p class="text-lg font-bold">Add Reservation</p>
+                <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">Create a new guest booking.</p>
+              </a>
+              <a class="rounded-2xl border border-primary/10 bg-primary/5 p-5 transition-all hover:border-primary/30 hover:bg-primary/10" href="view-reservation.html">
+                <p class="text-lg font-bold">View Reservations</p>
+                <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">Search and review booking details.</p>
+              </a>
+              <a class="rounded-2xl border border-primary/10 bg-primary/5 p-5 transition-all hover:border-primary/30 hover:bg-primary/10" href="bill.html">
+                <p class="text-lg font-bold">Billing &amp; Invoices</p>
+                <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">Load and print guest invoices.</p>
+              </a>
+              <a class="rounded-2xl border border-primary/10 bg-primary/5 p-5 transition-all hover:border-primary/30 hover:bg-primary/10" href="dashboard.html">
+                <p class="text-lg font-bold">Dashboard</p>
+                <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">Return to the main control panel.</p>
+              </a>
+            </div>
           </div>
-          <div class="flex flex-col gap-3 rounded-xl border border-primary/20 bg-primary/5 p-6">
-            <span class="material-symbols-outlined text-3xl text-primary">payments</span>
-            <h3 class="text-lg font-bold">Billing &amp; Payments</h3>
-            <p class="text-sm text-slate-600 dark:text-slate-400">Understand invoices, room rates, and how totals are calculated.</p>
-          </div>
-          <div class="flex flex-col gap-3 rounded-xl border border-primary/20 bg-primary/5 p-6">
-            <span class="material-symbols-outlined text-3xl text-primary">room_service</span>
-            <h3 class="text-lg font-bold">Resort Services</h3>
-            <p class="text-sm text-slate-600 dark:text-slate-400">Quick guidance for concierge support and general reservation assistance.</p>
-          </div>
-        </div>
 
-        <div class="max-w-4xl">
-          <h2 class="mb-6 text-2xl font-bold leading-tight text-slate-900 dark:text-white">Frequently Asked Questions</h2>
-          <div class="flex flex-col gap-4">
-            <details class="group flex flex-col rounded-xl border border-primary/10 bg-primary/5 px-6 py-4 dark:bg-slate-900/50" open>
-              <summary class="flex cursor-pointer list-none items-center justify-between gap-6">
-                <div class="flex items-center gap-3">
-                  <span class="material-symbols-outlined text-primary">add_circle</span>
-                  <p class="text-base font-semibold text-slate-900 dark:text-white">How do I add a new reservation?</p>
+          <div class="glass-panel rounded-3xl p-8 shadow-xl">
+            <h3 class="mb-6 text-2xl font-bold">Frequently Asked Questions</h3>
+            <div class="space-y-4">
+              <details class="group rounded-2xl border border-primary/10 bg-primary/5 px-6 py-4">
+                <summary class="cursor-pointer list-none text-base font-semibold text-slate-900 dark:text-white">How do I create a new reservation?</summary>
+                <div class="mt-4 border-t border-primary/10 pt-4">
+                  <p class="text-sm leading-relaxed text-slate-600 dark:text-slate-400">Go to <span class="font-medium text-primary">Add Reservation</span>, fill in the guest details, dates, and room type, then click <span class="font-medium">Confirm Reservation</span>.</p>
                 </div>
-                <span class="material-symbols-outlined transition-transform duration-300 group-open:rotate-180">expand_more</span>
-              </summary>
-              <div class="mt-4 border-t border-primary/10 pt-4">
-                <p class="mb-4 text-sm leading-relaxed text-slate-600 dark:text-slate-400">Adding a reservation is simple through the reservation form:</p>
-                <ol class="list-inside list-decimal space-y-2 text-sm text-slate-600 dark:text-slate-400">
-                  <li>Open the <span class="font-medium text-primary">Dashboard</span>.</li>
-                  <li>Choose <span class="font-bold">Add Reservation</span>.</li>
-                  <li>Enter the guest details, dates, and room type.</li>
-                  <li>Click <span class="font-bold text-primary">Confirm Reservation</span>.</li>
-                </ol>
-              </div>
-            </details>
+              </details>
 
-            <details class="group flex flex-col rounded-xl border border-primary/10 bg-primary/5 px-6 py-4 dark:bg-slate-900/50">
-              <summary class="flex cursor-pointer list-none items-center justify-between gap-6">
-                <div class="flex items-center gap-3">
-                  <span class="material-symbols-outlined text-primary">receipt_long</span>
-                  <p class="text-base font-semibold text-slate-900 dark:text-white">Where can I view current bills?</p>
+              <details class="group rounded-2xl border border-primary/10 bg-primary/5 px-6 py-4">
+                <summary class="cursor-pointer list-none text-base font-semibold text-slate-900 dark:text-white">Where can I view current bills?</summary>
+                <div class="mt-4 border-t border-primary/10 pt-4">
+                  <p class="text-sm leading-relaxed text-slate-600 dark:text-slate-400">Open the <span class="font-medium text-primary">Billing &amp; Invoices</span> page, enter the reservation ID, and click <span class="font-medium">Load Bill</span>.</p>
                 </div>
-                <span class="material-symbols-outlined transition-transform duration-300 group-open:rotate-180">expand_more</span>
-              </summary>
-              <div class="mt-4 border-t border-primary/10 pt-4">
-                <p class="text-sm leading-relaxed text-slate-600 dark:text-slate-400">Open the <span class="font-medium text-primary">Billing &amp; Invoices</span> page, enter the reservation ID, and click <span class="font-medium">Load Bill</span> to generate the invoice.</p>
-              </div>
-            </details>
+              </details>
 
-            <details class="group flex flex-col rounded-xl border border-primary/10 bg-primary/5 px-6 py-4 dark:bg-slate-900/50">
-              <summary class="flex cursor-pointer list-none items-center justify-between gap-6">
-                <div class="flex items-center gap-3">
-                  <span class="material-symbols-outlined text-primary">search</span>
-                  <p class="text-base font-semibold text-slate-900 dark:text-white">How do I view an existing booking?</p>
+              <details class="group rounded-2xl border border-primary/10 bg-primary/5 px-6 py-4">
+                <summary class="cursor-pointer list-none text-base font-semibold text-slate-900 dark:text-white">How do I view an existing booking?</summary>
+                <div class="mt-4 border-t border-primary/10 pt-4">
+                  <p class="text-sm leading-relaxed text-slate-600 dark:text-slate-400">Use the <span class="font-medium text-primary">View Reservations</span> page and search using the reservation ID created after saving the booking.</p>
                 </div>
-                <span class="material-symbols-outlined transition-transform duration-300 group-open:rotate-180">expand_more</span>
-              </summary>
-              <div class="mt-4 border-t border-primary/10 pt-4">
-                <p class="text-sm leading-relaxed text-slate-600 dark:text-slate-400">Use the <span class="font-medium text-primary">View Reservation</span> page and search using the reservation ID created after saving the booking.</p>
-              </div>
-            </details>
+              </details>
 
-            <details class="group flex flex-col rounded-xl border border-primary/10 bg-primary/5 px-6 py-4 dark:bg-slate-900/50">
-              <summary class="flex cursor-pointer list-none items-center justify-between gap-6">
-                <div class="flex items-center gap-3">
-                  <span class="material-symbols-outlined text-primary">warning</span>
-                  <p class="text-base font-semibold text-slate-900 dark:text-white">What if the system says unauthorized?</p>
+              <details class="group rounded-2xl border border-primary/10 bg-primary/5 px-6 py-4">
+                <summary class="cursor-pointer list-none text-base font-semibold text-slate-900 dark:text-white">What if the system says unauthorized?</summary>
+                <div class="mt-4 border-t border-primary/10 pt-4">
+                  <p class="text-sm leading-relaxed text-slate-600 dark:text-slate-400">Your session has expired. Return to the <span class="font-medium text-primary">login page</span>, sign in again, and continue from the dashboard.</p>
                 </div>
-                <span class="material-symbols-outlined transition-transform duration-300 group-open:rotate-180">expand_more</span>
-              </summary>
-              <div class="mt-4 border-t border-primary/10 pt-4">
-                <p class="text-sm leading-relaxed text-slate-600 dark:text-slate-400">Your session has expired. Return to the <span class="font-medium text-primary">login page</span>, sign in again, and continue from the dashboard.</p>
-              </div>
-            </details>
+              </details>
+            </div>
           </div>
         </div>
 
-        <div class="mt-16 flex flex-col items-center justify-between gap-6 rounded-2xl border border-primary/30 bg-gradient-to-br from-primary/20 to-transparent p-8 md:flex-row">
+        <div class="mt-16 flex flex-col items-center justify-between gap-6 rounded-3xl border border-primary/30 bg-gradient-to-br from-primary/20 to-transparent p-8 md:flex-row">
           <div>
             <h3 class="mb-2 text-xl font-bold">Still need help?</h3>
             <p class="text-slate-600 dark:text-slate-400">Our support team is available to assist with booking, billing, and account access.</p>
           </div>
           <div class="flex gap-4">
-            <a class="flex items-center gap-2 rounded-xl bg-primary px-6 py-3 font-bold text-background-dark transition-opacity hover:opacity-90" href="login.html">
-              <span class="material-symbols-outlined">chat</span>
-              Contact Support
-            </a>
+            <a class="rounded-xl bg-primary px-6 py-3 font-bold text-background-dark transition-opacity hover:opacity-90" href="login.html">Back to Login</a>
             <a class="rounded-xl border border-primary/30 bg-primary/20 px-6 py-3 font-bold text-primary transition-colors hover:bg-primary/30" href="dashboard.html">Back to Dashboard</a>
           </div>
         </div>
@@ -175,10 +155,7 @@
 
       <footer class="mt-auto border-t border-primary/10 px-6 py-10 text-center md:px-20 lg:px-40 md:text-left">
         <div class="flex flex-col items-center justify-between gap-6 md:flex-row">
-          <div class="flex items-center gap-2 text-primary opacity-60">
-            <span class="material-symbols-outlined">tsunami</span>
-            <span class="text-xs font-bold uppercase tracking-widest">OceanView Reservation</span>
-          </div>
+          <div class="text-xs font-bold uppercase tracking-widest text-primary/70">OceanView Reservation</div>
           <div class="flex gap-8 text-sm text-slate-500">
             <a class="transition-colors hover:text-primary" href="#">Privacy Policy</a>
             <a class="transition-colors hover:text-primary" href="#">Terms of Service</a>

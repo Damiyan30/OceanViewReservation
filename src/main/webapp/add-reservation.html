@@ -6,7 +6,6 @@
   <title>New Reservation | OceanView</title>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&display=swap" rel="stylesheet"/>
   <script>
     tailwind.config = {
       darkMode: "class",
@@ -20,135 +19,112 @@
           fontFamily: {
             display: ["Plus Jakarta Sans", "sans-serif"],
           },
-          borderRadius: {
-            DEFAULT: "0.25rem",
-            lg: "0.5rem",
-            xl: "0.75rem",
-            full: "9999px",
-          },
         },
       },
     };
   </script>
   <style>
     .glass-panel {
-      background: rgba(16, 31, 34, 0.7);
+      background: rgba(16, 31, 34, 0.72);
       backdrop-filter: blur(12px);
-      border: 1px solid rgba(13, 204, 242, 0.1);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(13, 204, 242, 0.12);
     }
   </style>
 </head>
 <body class="min-h-screen bg-background-light font-display text-slate-900 dark:bg-background-dark dark:text-slate-100">
   <div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
     <div class="layout-container flex h-full grow flex-col">
-      <header class="sticky top-0 z-50 flex items-center justify-between whitespace-nowrap border-b border-slate-200 bg-background-light/80 px-6 py-3 backdrop-blur-md dark:border-slate-800 dark:bg-background-dark/80 md:px-10">
-        <div class="flex items-center gap-4 text-primary">
-          <div class="size-6">
-            <svg fill="currentColor" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-              <path d="M44 11.2727C44 14.0109 39.8386 16.3957 33.69 17.6364C39.8386 18.877 44 21.2618 44 24C44 26.7382 39.8386 29.123 33.69 30.3636C39.8386 31.6043 44 33.9891 44 36.7273C44 40.7439 35.0457 44 24 44C12.9543 44 4 40.7439 4 36.7273C4 33.9891 8.16144 31.6043 14.31 30.3636C8.16144 29.123 4 26.7382 4 24C4 21.2618 8.16144 18.877 14.31 17.6364C8.16144 16.3957 4 14.0109 4 11.2727C4 7.25611 12.9543 4 24 4C35.0457 4 44 7.25611 44 11.2727Z"></path>
-            </svg>
+      <header class="sticky top-0 z-50 flex items-center justify-between border-b border-slate-200 bg-background-light/80 px-6 py-4 backdrop-blur-md dark:border-slate-800 dark:bg-background-dark/80 md:px-10">
+        <div class="flex items-center gap-3">
+          <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/15 text-sm font-extrabold text-primary">OV</div>
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-[0.25em] text-slate-500 dark:text-slate-400">OceanView</p>
+            <h2 class="text-lg font-bold text-slate-900 dark:text-slate-100">Reservation System</h2>
           </div>
-          <h2 class="text-lg font-bold leading-tight tracking-tight text-slate-900 dark:text-slate-100">OceanView</h2>
         </div>
         <div class="flex flex-1 justify-end gap-8">
           <nav class="hidden items-center gap-9 md:flex">
             <a class="text-sm font-medium text-slate-600 transition-colors hover:text-primary dark:text-slate-300" href="dashboard.html">Dashboard</a>
             <a class="text-sm font-semibold text-primary" href="add-reservation.html">Reservations</a>
             <a class="text-sm font-medium text-slate-600 transition-colors hover:text-primary dark:text-slate-300" href="bill.html">Billing</a>
+            <a class="text-sm font-medium text-slate-600 transition-colors hover:text-primary dark:text-slate-300" href="help.html">Help</a>
           </nav>
-          <a class="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-200 text-slate-700 transition-all hover:bg-primary/20 dark:bg-slate-800 dark:text-slate-200" href="help.html" title="Help Center">
-            <span class="material-symbols-outlined">help</span>
-          </a>
         </div>
       </header>
 
       <main class="flex flex-1 justify-center px-4 py-8 md:px-10">
         <div class="layout-content-container flex max-w-[960px] flex-1 flex-col gap-8">
-          <div class="group relative h-48 overflow-hidden rounded-xl md:h-64">
-            <div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style="background-image: linear-gradient(to top, rgba(16, 31, 34, 0.9), transparent), url('https://lh3.googleusercontent.com/aida-public/AB6AXuAVXOdvAkQjCh4X1dfizpK2ZrD_F1q1Nrkz5JEgumfql1IBbfLNFHLAD2XbDX83WxU9xoPtYF3DiTh1ZmhnA4kosqa1gFuNOcUXV_tjm_h0iNSiOw2mVDYjOdUdcoBMyIQFX0BCEMq9vvdsFqFp7qBmdGPthrfuQYWyZA-FBhT923hamIKOP1vcPq2WrJCKvnk-Sb9oDoLY8BIXAqrPH_risq0OcpcL3eMDmuyWAScRRZ6m5cveYKNpnFQfkvKoeQNwiTdBFJ2vGLc');"></div>
+          <div class="group relative h-48 overflow-hidden rounded-2xl md:h-64">
+            <div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style="background-image: linear-gradient(to top, rgba(16, 31, 34, 0.88), transparent), url('https://lh3.googleusercontent.com/aida-public/AB6AXuAVXOdvAkQjCh4X1dfizpK2ZrD_F1q1Nrkz5JEgumfql1IBbfLNFHLAD2XbDX83WxU9xoPtYF3DiTh1ZmhnA4kosqa1gFuNOcUXV_tjm_h0iNSiOw2mVDYjOdUdcoBMyIQFX0BCEMq9vvdsFqFp7qBmdGPthrfuQYWyZA-FBhT923hamIKOP1vcPq2WrJCKvnk-Sb9oDoLY8BIXAqrPH_risq0OcpcL3eMDmuyWAScRRZ6m5cveYKNpnFQfkvKoeQNwiTdBFJ2vGLc');"></div>
             <div class="absolute bottom-0 left-0 p-6 md:p-10">
-              <h1 class="mb-2 text-3xl font-bold text-white md:text-4xl">Book Your Escape</h1>
-              <p class="font-medium text-primary">Secure your oceanfront experience today</p>
+              <h1 class="mb-2 text-3xl font-bold text-white md:text-4xl">Add Reservation</h1>
+              <p class="font-medium text-primary">Create a new booking for your guest</p>
             </div>
           </div>
 
-          <div class="glass-panel rounded-xl p-6 shadow-2xl md:p-10">
-            <div aria-live="polite" class="hidden mb-6 rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300" id="formError"></div>
+          <div class="glass-panel rounded-2xl p-6 shadow-2xl md:p-10">
+            <div class="hidden mb-6 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300" id="formError"></div>
 
             <form class="grid grid-cols-1 gap-6 md:grid-cols-2" id="reservationForm">
               <div class="col-span-full border-b border-primary/20 pb-2">
-                <h3 class="flex items-center gap-2 text-xl font-bold text-primary">
-                  <span class="material-symbols-outlined">badge</span> Guest Information
-                </h3>
+                <h3 class="text-xl font-bold text-primary">Guest Information</h3>
               </div>
 
               <div class="flex flex-col gap-2">
                 <label class="text-sm font-semibold text-slate-400" for="guestName">Full Name</label>
-                <input class="h-12 rounded-lg border-slate-700 bg-slate-800/50 px-4 text-slate-100 placeholder:text-slate-500 focus:border-primary focus:ring-primary" id="guestName" placeholder="e.g. John Doe" required type="text"/>
+                <input class="h-12 rounded-xl border-slate-700 bg-slate-800/50 px-4 text-slate-100 placeholder:text-slate-500 focus:border-primary focus:ring-primary" id="guestName" placeholder="e.g. John Doe" required type="text"/>
               </div>
 
               <div class="flex flex-col gap-2">
                 <label class="text-sm font-semibold text-slate-400" for="contactNo">Contact Number</label>
-                <input class="h-12 rounded-lg border-slate-700 bg-slate-800/50 px-4 text-slate-100 placeholder:text-slate-500 focus:border-primary focus:ring-primary" id="contactNo" placeholder="+94 77 123 4567" required type="tel"/>
+                <input class="h-12 rounded-xl border-slate-700 bg-slate-800/50 px-4 text-slate-100 placeholder:text-slate-500 focus:border-primary focus:ring-primary" id="contactNo" placeholder="+94 77 123 4567" required type="tel"/>
               </div>
 
               <div class="flex flex-col gap-2">
                 <label class="text-sm font-semibold text-slate-400" for="email">Email Address</label>
-                <input class="h-12 rounded-lg border-slate-700 bg-slate-800/50 px-4 text-slate-100 placeholder:text-slate-500 focus:border-primary focus:ring-primary" id="email" placeholder="john@example.com" type="email"/>
+                <input class="h-12 rounded-xl border-slate-700 bg-slate-800/50 px-4 text-slate-100 placeholder:text-slate-500 focus:border-primary focus:ring-primary" id="email" placeholder="john@example.com" type="email"/>
               </div>
 
               <div class="flex flex-col gap-2">
                 <label class="text-sm font-semibold text-slate-400" for="address">Home Address</label>
-                <input class="h-12 rounded-lg border-slate-700 bg-slate-800/50 px-4 text-slate-100 placeholder:text-slate-500 focus:border-primary focus:ring-primary" id="address" placeholder="123 Ocean Way, Colombo" type="text"/>
+                <input class="h-12 rounded-xl border-slate-700 bg-slate-800/50 px-4 text-slate-100 placeholder:text-slate-500 focus:border-primary focus:ring-primary" id="address" placeholder="123 Ocean Way, Colombo" type="text"/>
               </div>
 
               <div class="col-span-full mt-4 border-b border-primary/20 pb-2">
-                <h3 class="flex items-center gap-2 text-xl font-bold text-primary">
-                  <span class="material-symbols-outlined">calendar_month</span> Stay Details
-                </h3>
+                <h3 class="text-xl font-bold text-primary">Stay Details</h3>
               </div>
 
               <div class="flex flex-col gap-2">
                 <label class="text-sm font-semibold text-slate-400" for="checkIn">Check-in Date</label>
-                <input class="h-12 rounded-lg border-slate-700 bg-slate-800/50 px-4 text-slate-100 focus:border-primary focus:ring-primary [color-scheme:dark]" id="checkIn" required type="date"/>
+                <input class="h-12 rounded-xl border-slate-700 bg-slate-800/50 px-4 text-slate-100 focus:border-primary focus:ring-primary [color-scheme:dark]" id="checkIn" required type="date"/>
               </div>
 
               <div class="flex flex-col gap-2">
                 <label class="text-sm font-semibold text-slate-400" for="checkOut">Check-out Date</label>
-                <input class="h-12 rounded-lg border-slate-700 bg-slate-800/50 px-4 text-slate-100 focus:border-primary focus:ring-primary [color-scheme:dark]" id="checkOut" required type="date"/>
+                <input class="h-12 rounded-xl border-slate-700 bg-slate-800/50 px-4 text-slate-100 focus:border-primary focus:ring-primary [color-scheme:dark]" id="checkOut" required type="date"/>
               </div>
 
               <div class="flex flex-col gap-2 md:col-span-2">
                 <label class="text-sm font-semibold text-slate-400" for="typeId">Room Category</label>
-                <select class="h-12 rounded-lg border-slate-700 bg-slate-800/50 px-4 text-slate-100 focus:border-primary focus:ring-primary" id="typeId" required>
+                <select class="h-12 rounded-xl border-slate-700 bg-slate-800/50 px-4 text-slate-100 focus:border-primary focus:ring-primary" id="typeId" required>
                   <option disabled selected value="">Select a room type</option>
                 </select>
               </div>
 
               <div class="col-span-full flex flex-col gap-4 pt-6 sm:flex-row">
-                <button class="flex h-14 flex-1 items-center justify-center gap-2 rounded-lg bg-primary font-bold text-background-dark transition-transform hover:bg-primary/90 active:scale-[0.98]" id="btnSave" type="submit">
-                  <span class="material-symbols-outlined">check_circle</span>
-                  Confirm Reservation
-                </button>
-                <button class="flex h-14 items-center justify-center gap-2 rounded-lg bg-slate-800 px-8 font-semibold text-slate-100 transition-colors hover:bg-slate-700" id="btnClear" type="reset">
-                  <span class="material-symbols-outlined">backspace</span>
-                  Clear
-                </button>
+                <button class="flex h-14 flex-1 items-center justify-center rounded-xl bg-primary font-bold text-background-dark transition-transform active:scale-[0.98] hover:bg-primary/90" id="btnSave" type="submit">Confirm Reservation</button>
+                <button class="flex h-14 items-center justify-center rounded-xl bg-slate-800 px-8 font-semibold text-slate-100 transition-colors hover:bg-slate-700" id="btnClear" type="reset">Clear</button>
               </div>
             </form>
           </div>
 
-          <div class="glass-panel hidden items-start gap-4 rounded-xl border border-green-500/30 p-6" id="out">
-            <div class="rounded-full bg-green-500/20 p-2">
-              <span class="material-symbols-outlined text-green-500">task_alt</span>
-            </div>
+          <div class="glass-panel hidden flex items-start gap-4 rounded-2xl border border-green-500/30 p-6" id="out">
             <div>
-              <h4 class="font-bold text-slate-100">Reservation Confirmed!</h4>
+              <h4 class="font-bold text-slate-100">Reservation Confirmed</h4>
               <p class="mb-3 mt-1 text-sm text-slate-400">Your booking has been successfully processed.</p>
               <p class="mb-3 text-sm text-slate-300">Reservation ID: <span class="font-bold text-primary" id="reservationIdDisplay">RES-00000</span></p>
-              <a class="flex items-center gap-1 text-sm font-bold text-primary hover:underline" href="view-reservation.html" id="viewReservationLink">
-                View Booking Details <span class="material-symbols-outlined text-xs">arrow_forward</span>
-              </a>
+              <a class="text-sm font-bold text-primary hover:underline" href="view-reservation.html" id="viewReservationLink">View Reservation Details</a>
             </div>
           </div>
         </div>

@@ -90,13 +90,13 @@
         button.dataset.originalHtml = button.innerHTML;
       }
       button.disabled = true;
-      button.classList.add("opacity-70");
-      button.innerHTML = `<span class="material-symbols-outlined animate-spin">progress_activity</span><span>${escapeHtml(busyLabel)}</span>`;
+      button.classList.add("opacity-70", "cursor-wait");
+      button.innerHTML = `<span>${escapeHtml(busyLabel)}</span>`;
       return;
     }
 
     button.disabled = false;
-    button.classList.remove("opacity-70");
+    button.classList.remove("opacity-70", "cursor-wait");
     if (button.dataset.originalHtml) {
       button.innerHTML = button.dataset.originalHtml;
     }
@@ -156,8 +156,7 @@
     toast.id = "ovrToast";
     toast.className = "fixed bottom-6 right-6 z-[9999] hidden translate-y-6 opacity-0 transition-all duration-300";
     toast.innerHTML = `
-      <div class="flex items-center gap-3 rounded-xl border border-slate-800 bg-slate-950/80 px-5 py-3 text-sm font-medium text-slate-100 shadow-xl backdrop-blur">
-        <span class="material-symbols-outlined text-xl" id="ovrToastIcon">info</span>
+      <div id="ovrToastCard" class="rounded-xl border border-slate-700 bg-slate-950/90 px-5 py-3 text-sm font-medium text-slate-100 shadow-xl backdrop-blur">
         <span id="ovrToastMsg">Message</span>
       </div>
     `;
@@ -167,12 +166,22 @@
   function toast(message, type = "info") {
     ensureToast();
     const wrap = $("ovrToast");
-    const icon = $("ovrToastIcon");
+    const card = $("ovrToastCard");
     const text = $("ovrToastMsg");
-    if (!wrap || !icon || !text) return;
+    if (!wrap || !card || !text) return;
 
     text.textContent = message;
-    icon.textContent = type === "ok" ? "check_circle" : type === "err" ? "error" : type === "warn" ? "warning" : "info";
+    card.className = "rounded-xl border bg-slate-950/90 px-5 py-3 text-sm font-medium text-slate-100 shadow-xl backdrop-blur";
+
+    if (type === "ok") {
+      card.classList.add("border-emerald-500/40");
+    } else if (type === "err") {
+      card.classList.add("border-red-500/40");
+    } else if (type === "warn") {
+      card.classList.add("border-amber-500/40");
+    } else {
+      card.classList.add("border-slate-700");
+    }
 
     wrap.classList.remove("hidden");
     requestAnimationFrame(() => {
@@ -236,7 +245,7 @@
   async function requireAuth() {
     const me = await api("api/me");
     setTextForSelector("[data-user-name]", me.username || "Staff User");
-    setTextForSelector("[data-user-role]", me.role || "Authorized");
+    setTextForSelector("[data-user-role]", me.role || "Authorized User");
     return me;
   }
 
@@ -404,12 +413,12 @@
         checkOut: $("checkOut")?.value || "",
       };
 
-      if (!payload.guestName) return showPanel("formError", "Guest Name is required.");
-      if (!payload.contactNo) return showPanel("formError", "Contact Number is required.");
+      if (!payload.guestName) return showPanel("formError", "Guest name is required.");
+      if (!payload.contactNo) return showPanel("formError", "Contact number is required.");
       if (!payload.checkIn) return showPanel("formError", "Check-in date is required.");
       if (!payload.checkOut) return showPanel("formError", "Check-out date is required.");
-      if (payload.checkOut <= payload.checkIn) return showPanel("formError", "Check-out must be after Check-in.");
-      if (!payload.typeId) return showPanel("formError", "Room Type is required.");
+      if (payload.checkOut <= payload.checkIn) return showPanel("formError", "Check-out must be after check-in.");
+      if (!payload.typeId) return showPanel("formError", "Room type is required.");
 
       const digits = payload.contactNo.replace(/\D/g, "");
       if (digits.length < 9) return showPanel("formError", "Contact number seems too short.");
@@ -493,7 +502,7 @@
       const nights = nightsBetween(reservation.checkIn, reservation.checkOut);
       const nightlyRate = Number(reservation.nightlyRate) || 0;
       const total = nights * nightlyRate;
-      const guestMeta = [reservation.email, reservation.contactNo].filter(Boolean).join(" • ") || "--";
+      const guestMeta = [reservation.email, reservation.contactNo].filter(Boolean).join(" | ") || "--";
 
       setText("display-rid", reservation.reservationId || "--");
       setText("res-guest-name", reservation.guestName);
@@ -531,8 +540,8 @@
     searchButton?.addEventListener("click", () => {
       const id = (ridInput?.value || "").trim();
       if (!id) {
-        showPanel("viewError", "Enter a Reservation ID.");
-        toast("Enter a Reservation ID.", "warn");
+        showPanel("viewError", "Enter a reservation ID.");
+        toast("Enter a reservation ID.", "warn");
         return;
       }
       void loadReservation(id);
@@ -596,7 +605,7 @@
                 <div class="font-bold text-slate-900 dark:text-slate-100">${escapeHtml(bill.roomType || "Room")}</div>
                 <div class="mt-1 text-xs text-slate-500 dark:text-slate-400">
                   Reservation ${escapeHtml(reservationCode(bill.reservationId))}<br/>
-                  ${escapeHtml(bill.checkIn || "--")} → ${escapeHtml(bill.checkOut || "--")}
+                  ${escapeHtml(bill.checkIn || "--")} to ${escapeHtml(bill.checkOut || "--")}
                 </div>
               </td>
               <td class="py-4 text-center font-bold">${escapeHtml(String(bill.nights ?? 0))}</td>
@@ -631,8 +640,8 @@
     loadButton?.addEventListener("click", () => {
       const id = (ridInput?.value || "").trim();
       if (!id) {
-        showPanel("invoiceError", "Enter a Reservation ID.");
-        toast("Enter a Reservation ID.", "warn");
+        showPanel("invoiceError", "Enter a reservation ID.");
+        toast("Enter a reservation ID.", "warn");
         return;
       }
       void loadBill(id);

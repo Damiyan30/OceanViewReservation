@@ -3,10 +3,9 @@
 <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-  <title>Dashboard - OceanViewReservation</title>
+  <title>Dashboard - OceanView Reservation</title>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&display=swap" rel="stylesheet"/>
   <script>
     tailwind.config = {
       darkMode: "class",
@@ -20,12 +19,6 @@
           fontFamily: {
             display: ["Plus Jakarta Sans", "sans-serif"],
           },
-          borderRadius: {
-            DEFAULT: "0.25rem",
-            lg: "0.5rem",
-            xl: "0.75rem",
-            full: "9999px",
-          },
         },
       },
     };
@@ -35,39 +28,35 @@
       background: rgba(13, 204, 242, 0.05);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.08);
     }
-    .glass-hover:hover {
-      background: rgba(13, 204, 242, 0.1);
-      border-color: rgba(13, 204, 242, 0.3);
-      transition: all 0.3s ease;
+    .card-hover:hover {
+      background: rgba(13, 204, 242, 0.09);
+      border-color: rgba(13, 204, 242, 0.24);
+      transform: translateY(-4px);
     }
   </style>
 </head>
 <body class="min-h-screen bg-background-light font-display text-slate-900 dark:bg-background-dark dark:text-slate-100">
   <div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
-    <header class="glass sticky top-0 z-50 border-b border-slate-200/10 px-6 py-4 lg:px-20">
+    <header class="glass sticky top-0 z-50 border-b border-white/10 px-6 py-4 lg:px-20">
       <div class="mx-auto flex max-w-7xl items-center justify-between">
-        <div class="flex items-center gap-3 text-primary">
-          <div class="flex size-8 items-center justify-center rounded-lg bg-primary/20">
-            <span class="material-symbols-outlined text-primary">waves</span>
+        <div class="flex items-center gap-3">
+          <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/15 text-sm font-extrabold text-primary">OV</div>
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-[0.25em] text-slate-500 dark:text-slate-400">OceanView</p>
+            <h1 class="text-lg font-bold text-slate-900 dark:text-white">Reservation System</h1>
           </div>
-          <h1 class="text-xl font-bold tracking-tight text-slate-900 dark:text-white">OceanView</h1>
         </div>
 
-        <div class="flex items-center gap-6">
-          <div class="hidden items-center gap-3 rounded-full border border-slate-700/50 bg-slate-800/40 px-4 py-2 sm:flex" data-user-badge>
+        <div class="flex items-center gap-4">
+          <div class="hidden items-center gap-3 rounded-full border border-white/10 bg-slate-900/20 px-4 py-2 sm:flex">
             <div class="text-right">
-              <p class="text-xs font-bold leading-none text-white" data-user-name>Staff User</p>
-              <p class="text-[10px] font-semibold uppercase tracking-wider text-primary" data-user-role>Authorized</p>
-            </div>
-            <div class="flex size-8 items-center justify-center overflow-hidden rounded-full border border-primary/50 bg-primary/30 shadow-lg shadow-primary/20">
-              <span class="material-symbols-outlined text-sm text-primary">person</span>
+              <p class="text-sm font-bold text-white" data-user-name>Staff User</p>
+              <p class="text-[11px] font-semibold uppercase tracking-wider text-primary" data-user-role>Authorized User</p>
             </div>
           </div>
-          <button class="glass-hover flex size-10 items-center justify-center rounded-full text-slate-400 transition-colors hover:text-red-400" id="btnLogout" title="Logout" type="button">
-            <span class="material-symbols-outlined">logout</span>
-          </button>
+          <button class="rounded-full border border-white/10 bg-slate-900/20 px-4 py-2 text-sm font-semibold text-slate-200 transition-colors hover:border-red-400/40 hover:text-red-300" id="btnLogout" type="button">Logout</button>
         </div>
       </div>
     </header>
@@ -80,115 +69,76 @@
         </div>
 
         <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-          <a class="glass glass-hover group relative flex flex-col overflow-hidden rounded-xl p-6 transition-all duration-300 hover:-translate-y-1" href="add-reservation.html">
-            <div class="absolute right-0 top-0 p-8 opacity-10 transition-opacity group-hover:opacity-20">
-              <span class="material-symbols-outlined text-8xl">calendar_add_on</span>
-            </div>
-            <div class="mb-6 flex size-12 items-center justify-center rounded-lg bg-primary/20">
-              <span class="material-symbols-outlined text-primary">add_circle</span>
-            </div>
+          <a class="glass card-hover flex flex-col rounded-2xl p-6 transition-all duration-300" href="add-reservation.html">
+            <div class="mb-6 h-1.5 w-14 rounded-full bg-primary"></div>
             <h3 class="mb-2 text-xl font-bold text-slate-900 dark:text-white">Add Reservation</h3>
             <p class="text-sm leading-relaxed text-slate-500 dark:text-slate-400">Book new guests into suites, villas, or beachfront cabins.</p>
-            <div class="mt-6 flex items-center gap-2 text-sm font-bold text-primary">
-              <span>Create Booking</span>
-              <span class="material-symbols-outlined text-sm">arrow_forward</span>
-            </div>
+            <div class="mt-6 text-sm font-bold text-primary">Create Booking</div>
           </a>
 
-          <a class="glass glass-hover group relative flex flex-col overflow-hidden rounded-xl p-6 transition-all duration-300 hover:-translate-y-1" href="view-reservation.html">
-            <div class="absolute right-0 top-0 p-8 opacity-10 transition-opacity group-hover:opacity-20">
-              <span class="material-symbols-outlined text-8xl">list_alt</span>
-            </div>
-            <div class="mb-6 flex size-12 items-center justify-center rounded-lg bg-emerald-500/20">
-              <span class="material-symbols-outlined text-emerald-500">event_available</span>
-            </div>
-            <h3 class="mb-2 text-xl font-bold text-slate-900 dark:text-white">View Bookings</h3>
+          <a class="glass card-hover flex flex-col rounded-2xl p-6 transition-all duration-300" href="view-reservation.html">
+            <div class="mb-6 h-1.5 w-14 rounded-full bg-emerald-500"></div>
+            <h3 class="mb-2 text-xl font-bold text-slate-900 dark:text-white">View Reservations</h3>
             <p class="text-sm leading-relaxed text-slate-500 dark:text-slate-400">Search a reservation, check guest details, and open billing instantly.</p>
-            <div class="mt-6 flex items-center gap-2 text-sm font-bold text-emerald-500">
-              <span>Manage Stays</span>
-              <span class="material-symbols-outlined text-sm">arrow_forward</span>
-            </div>
+            <div class="mt-6 text-sm font-bold text-emerald-500">Manage Stays</div>
           </a>
 
-          <a class="glass glass-hover group relative flex flex-col overflow-hidden rounded-xl p-6 transition-all duration-300 hover:-translate-y-1" href="bill.html">
-            <div class="absolute right-0 top-0 p-8 opacity-10 transition-opacity group-hover:opacity-20">
-              <span class="material-symbols-outlined text-8xl">account_balance_wallet</span>
-            </div>
-            <div class="mb-6 flex size-12 items-center justify-center rounded-lg bg-amber-500/20">
-              <span class="material-symbols-outlined text-amber-500">payments</span>
-            </div>
+          <a class="glass card-hover flex flex-col rounded-2xl p-6 transition-all duration-300" href="bill.html">
+            <div class="mb-6 h-1.5 w-14 rounded-full bg-amber-500"></div>
             <h3 class="mb-2 text-xl font-bold text-slate-900 dark:text-white">Billing &amp; Invoices</h3>
             <p class="text-sm leading-relaxed text-slate-500 dark:text-slate-400">Generate invoices, review totals, and print guest billing statements.</p>
-            <div class="mt-6 flex items-center gap-2 text-sm font-bold text-amber-500">
-              <span>Financials</span>
-              <span class="material-symbols-outlined text-sm">arrow_forward</span>
-            </div>
+            <div class="mt-6 text-sm font-bold text-amber-500">Financials</div>
           </a>
 
-          <a class="glass glass-hover group relative flex flex-col overflow-hidden rounded-xl p-6 transition-all duration-300 hover:-translate-y-1" href="help.html">
-            <div class="absolute right-0 top-0 p-8 opacity-10 transition-opacity group-hover:opacity-20">
-              <span class="material-symbols-outlined text-8xl">support_agent</span>
-            </div>
-            <div class="mb-6 flex size-12 items-center justify-center rounded-lg bg-slate-500/20">
-              <span class="material-symbols-outlined text-slate-400">help_center</span>
-            </div>
+          <a class="glass card-hover flex flex-col rounded-2xl p-6 transition-all duration-300" href="help.html">
+            <div class="mb-6 h-1.5 w-14 rounded-full bg-slate-400"></div>
             <h3 class="mb-2 text-xl font-bold text-slate-900 dark:text-white">Help Center</h3>
             <p class="text-sm leading-relaxed text-slate-500 dark:text-slate-400">Documentation, internal guides, and support information for staff.</p>
-            <div class="mt-6 flex items-center gap-2 text-sm font-bold text-slate-400">
-              <span>Get Support</span>
-              <span class="material-symbols-outlined text-sm">arrow_forward</span>
-            </div>
+            <div class="mt-6 text-sm font-bold text-slate-300">Get Support</div>
           </a>
         </div>
 
         <div class="mt-12 grid grid-cols-1 gap-6 lg:grid-cols-3">
-          <div class="glass rounded-2xl border-primary/10 p-8 lg:col-span-2">
+          <div class="glass rounded-2xl p-8 lg:col-span-2">
             <div class="mb-8 flex items-center justify-between">
-              <h4 class="text-xl font-bold text-white">Resort Status Overview</h4>
-              <span class="rounded-full bg-primary/10 px-3 py-1 text-xs font-bold uppercase text-primary">Live Updates</span>
+              <h4 class="text-xl font-bold text-slate-900 dark:text-white">Resort Status Overview</h4>
+              <span class="rounded-full bg-primary/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-primary">Live Updates</span>
             </div>
-            <div class="grid grid-cols-3 gap-4">
-              <div class="rounded-xl border border-slate-700/30 bg-slate-800/30 p-4">
-                <p class="mb-1 text-xs uppercase tracking-widest text-slate-400">Occupancy</p>
-                <p class="text-3xl font-black text-white">84%</p>
+            <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+              <div class="rounded-2xl border border-white/10 bg-slate-900/15 p-5">
+                <p class="mb-1 text-xs uppercase tracking-[0.2em] text-slate-400">Occupancy</p>
+                <p class="text-3xl font-black text-slate-900 dark:text-white">84%</p>
               </div>
-              <div class="rounded-xl border border-slate-700/30 bg-slate-800/30 p-4">
-                <p class="mb-1 text-xs uppercase tracking-widest text-slate-400">Arrivals Today</p>
+              <div class="rounded-2xl border border-white/10 bg-slate-900/15 p-5">
+                <p class="mb-1 text-xs uppercase tracking-[0.2em] text-slate-400">Arrivals Today</p>
                 <p class="text-3xl font-black text-primary">12</p>
               </div>
-              <div class="rounded-xl border border-slate-700/30 bg-slate-800/30 p-4">
-                <p class="mb-1 text-xs uppercase tracking-widest text-slate-400">Pending Invoices</p>
-                <p class="text-3xl font-black text-amber-500">5</p>
+              <div class="rounded-2xl border border-white/10 bg-slate-900/15 p-5">
+                <p class="mb-1 text-xs uppercase tracking-[0.2em] text-slate-400">Pending Invoices</p>
+                <p class="text-3xl font-black text-amber-400">5</p>
               </div>
             </div>
           </div>
 
-          <div class="glass group relative overflow-hidden rounded-2xl border-white/5 p-8">
-            <div class="relative z-10 flex h-full flex-col justify-between">
+          <div class="glass rounded-2xl p-8">
+            <h4 class="text-xl font-bold text-slate-900 dark:text-white">Weather Forecast</h4>
+            <p class="mt-2 text-slate-500 dark:text-slate-400">Conditions for the island resort area.</p>
+            <div class="mt-14 flex items-end justify-between gap-4">
               <div>
-                <h4 class="mb-2 text-xl font-bold text-white">Weather Forecast</h4>
-                <p class="text-sm text-slate-400">Conditions for the island resort area.</p>
+                <p class="text-4xl font-light text-amber-400">Sunny</p>
+                <p class="mt-2 text-sm text-slate-500 dark:text-slate-400">Clear skies</p>
               </div>
-              <div class="flex items-end justify-between">
-                <div class="flex items-center gap-2">
-                  <span class="material-symbols-outlined text-4xl text-amber-400">sunny</span>
-                  <span class="text-4xl font-black text-white">28°C</span>
-                </div>
-                <span class="text-sm italic text-slate-400">Clear Skies</span>
-              </div>
-            </div>
-            <div class="absolute -bottom-4 -right-4 size-32 rotate-12 opacity-10 transition-transform duration-700 group-hover:rotate-0">
-              <span class="material-symbols-outlined text-[120px] text-primary">waves</span>
+              <p class="text-5xl font-black text-slate-900 dark:text-white">28°C</p>
             </div>
           </div>
         </div>
       </div>
     </main>
 
-    <footer class="mt-auto border-t border-slate-200/5 px-6 py-8 lg:px-20">
-      <div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 text-sm text-slate-500 md:flex-row">
+    <footer class="border-t border-white/10 px-6 py-8 text-sm text-slate-500 lg:px-20">
+      <div class="mx-auto flex max-w-7xl flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <p>© 2024 OceanView Reservation Systems. All rights reserved.</p>
-        <div class="flex items-center gap-6">
+        <div class="flex gap-6">
           <a class="transition-colors hover:text-primary" href="#">Privacy Policy</a>
           <a class="transition-colors hover:text-primary" href="#">Terms of Service</a>
           <a class="transition-colors hover:text-primary" href="help.html">System Support</a>
