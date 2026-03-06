@@ -2,90 +2,66 @@
 <html>
 <head>
   <meta charset="utf-8" />
-  <title>OceanViewReservation - Help</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 24px; max-width: 900px; }
-    h2 { margin-bottom: 6px; }
-    .card { border: 1px solid #ccc; border-radius: 10px; padding: 16px; margin: 14px 0; }
-    code { background: #f2f2f2; padding: 2px 6px; border-radius: 6px; }
-    ul { margin-top: 6px; }
-    .small { color:#666; font-size: 14px; }
-    .top { display:flex; justify-content:space-between; align-items:center; }
-  </style>
+  <title>Help • OceanViewReservation</title>
+  <link rel="stylesheet" href="assets/styles.css">
+  <script src="assets/app.js" defer></script>
 </head>
 <body>
-  <div class="top">
-    <h2>Help</h2>
-    <a href="dashboard.html">Back</a>
-  </div>
+  <div class="container">
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo"></div>
+        <div>
+          <h1>OceanViewReservation</h1>
+          <div class="sub">Help & Support</div>
+        </div>
+      </div>
+      <div class="nav">
+        <a class="badge" href="dashboard.html">Dashboard</a>
+        <a class="badge" href="login.html">Login</a>
+      </div>
+    </div>
 
-  <p class="small">
-    OceanViewReservation is a simple hotel reservation system. Use the menu to add reservations,
-    view reservation details, and calculate/print bills.
-  </p>
+    <div class="main card">
+      <h2>How to use the system</h2>
+      <p>Common questions and quick steps.</p>
 
-  <div class="card">
-    <h3>Login</h3>
-    <ul>
-      <li>Go to <code>login.html</code></li>
-      <li>Enter your username and password</li>
-      <li>After successful login, you will be redirected to the Dashboard</li>
-    </ul>
-    <p class="small">If you are not logged in, the system will redirect you back to the login page.</p>
-  </div>
+      <div class="card" style="background:rgba(255,255,255,.04);">
+        <h2 style="font-size:16px;">FAQ</h2>
 
-  <div class="card">
-    <h3>Add Reservation</h3>
-    <ul>
-      <li>Dashboard → <b>Add Reservation</b></li>
-      <li>Fill required fields: Guest Name, Contact No, Check-in, Check-out, Room Type</li>
-      <li>Click <b>Save Reservation</b></li>
-      <li>The system will show a Reservation ID (keep it to view/print bill)</li>
-    </ul>
-  </div>
+        <details style="margin:10px 0;">
+          <summary style="cursor:pointer; font-weight:800;">How do I login?</summary>
+          <p>Open <b>login.html</b>, enter your credentials, then you’ll be redirected to the Dashboard.</p>
+        </details>
 
-  <div class="card">
-    <h3>View Reservation</h3>
-    <ul>
-      <li>Dashboard → <b>View Reservation</b></li>
-      <li>Enter the Reservation ID</li>
-      <li>Click <b>Search</b> to view reservation details</li>
-    </ul>
-  </div>
+        <details style="margin:10px 0;">
+          <summary style="cursor:pointer; font-weight:800;">How do I add a reservation?</summary>
+          <p>Dashboard → Add Reservation → fill required fields → Save. You’ll get a Reservation ID.</p>
+        </details>
 
-  <div class="card">
-    <h3>Calculate / Print Bill</h3>
-    <ul>
-      <li>Dashboard → <b>Calculate / Print Bill</b></li>
-      <li>Enter the Reservation ID</li>
-      <li>Click <b>Load Bill</b></li>
-      <li>Click <b>Print</b> to open the browser print dialog</li>
-    </ul>
-    <p class="small">Bill is calculated using: <code>Total = Nights × Nightly Rate</code></p>
-  </div>
+        <details style="margin:10px 0;">
+          <summary style="cursor:pointer; font-weight:800;">How do I view a reservation?</summary>
+          <p>Dashboard → View Reservation → enter Reservation ID → Search.</p>
+        </details>
 
-  <div class="card">
-    <h3>Logout (Exit)</h3>
-    <ul>
-      <li>Dashboard → <b>Logout (Exit)</b></li>
-      <li>This ends your session and returns you to the login page</li>
-    </ul>
-  </div>
+        <details style="margin:10px 0;">
+          <summary style="cursor:pointer; font-weight:800;">How do I print a bill?</summary>
+          <p>Dashboard → Bill → enter Reservation ID → Load Bill → Print.</p>
+        </details>
 
-  <div class="card">
-    <h3>Troubleshooting</h3>
-    <ul>
-      <li><b>Unauthorized / redirected to login:</b> your session expired or you logged out.</li>
-      <li><b>Reservation not found:</b> check the Reservation ID is correct.</li>
-      <li><b>Invalid dates:</b> check-out must be after check-in.</li>
-      <li><b>Room types not loading:</b> ensure <code>/api/room-types</code> works and DB has room types.</li>
-    </ul>
-  </div>
+        <details style="margin:10px 0;">
+          <summary style="cursor:pointer; font-weight:800;">Why do I get “Unauthorized”?</summary>
+          <p>Your session expired or you logged out. Login again.</p>
+        </details>
+      </div>
 
-  <div class="card">
-    <h3>Support</h3>
-    <p>If the problem continues, contact the system administrator.</p>
-    <p class="small">Example: oceanviewreservation.support@example.com</p>
+      <hr class="hr">
+
+      <div class="card" style="background:rgba(255,255,255,.04);">
+        <h2 style="font-size:16px;">Support</h2>
+        <p class="mono">oceanviewreservation.support@example.com</p>
+      </div>
+    </div>
   </div>
 </body>
 </html>

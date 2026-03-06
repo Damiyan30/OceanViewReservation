@@ -2,49 +2,78 @@
 <html>
 <head>
   <meta charset="utf-8" />
-  <title>OceanViewReservation - Dashboard</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 24px; }
-    .card { max-width: 520px; padding: 16px; border: 1px solid #ccc; border-radius: 8px; }
-    .btn { display: block; width: 100%; padding: 12px; margin: 10px 0; cursor: pointer; }
-    .small { color: #666; font-size: 14px; }
-  </style>
+  <title>Dashboard • OceanViewReservation</title>
+  <link rel="stylesheet" href="assets/styles.css">
+  <script src="assets/app.js" defer></script>
 </head>
 <body>
-  <h2>OceanViewReservation - Dashboard</h2>
+  <div class="container">
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo"></div>
+        <div>
+          <h1>OceanViewReservation</h1>
+          <div class="sub">Dashboard</div>
+        </div>
+      </div>
+      <div class="nav">
+        <span class="badge" data-user-badge>Loading…</span>
+        <a class="badge" href="help.html">Help</a>
+        <button class="btn btn-secondary no-print" id="btnLogout">Logout</button>
+      </div>
+    </div>
 
-  <div class="card">
-    <div id="user" class="small">Loading user...</div>
+    <div class="main">
+      <div class="card">
+        <h2>Quick actions</h2>
+        <p>Create and manage reservations, and print invoices.</p>
 
-    <button class="btn" onclick="location.href='add-reservation.html'">Add Reservation</button>
-    <button class="btn" onclick="location.href='view-reservation.html'">View Reservation</button>
-    <button class="btn" onclick="location.href='bill.html'">Calculate / Print Bill</button>
-    <button class="btn" onclick="location.href='help.html'">Help</button>
+        <div class="kpis">
+          <div class="kpi">
+            <div class="t">Create reservation</div>
+            <div class="v">Add</div>
+            <div class="actions">
+              <button class="btn btn-primary" onclick="location.href='add-reservation.html'">Add Reservation</button>
+            </div>
+          </div>
+          <div class="kpi">
+            <div class="t">Find reservation</div>
+            <div class="v">View</div>
+            <div class="actions">
+              <button class="btn btn-secondary" onclick="location.href='view-reservation.html'">View Reservation</button>
+            </div>
+          </div>
+          <div class="kpi">
+            <div class="t">Invoice</div>
+            <div class="v">Bill</div>
+            <div class="actions">
+              <button class="btn btn-secondary" onclick="location.href='bill.html'">Calculate / Print</button>
+            </div>
+          </div>
+        </div>
 
-    <button class="btn" onclick="logout()">Logout (Exit)</button>
+        <hr class="hr">
+
+        <div class="actions">
+          <button class="btn btn-secondary" onclick="location.href='help.html'">Help</button>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <pre id="out"></pre>
-
   <script>
-    async function loadUser() {
-      const res = await fetch('api/me');
-      if (!res.ok) {
-        location.href = 'login.html';
-        return;
-      }
-      const data = await res.json();
-      document.getElementById('user').textContent =
-        `Logged in as: ${data.username} (${data.role})`;
-    }
-
-    async function logout() {
-      const res = await fetch('api/logout', { method: 'POST' });
-      document.getElementById('out').textContent = await res.text();
-      location.href = 'login.html';
-    }
-
-    loadUser();
+    (async ()=>{
+      await requireAuth();
+      $("btnLogout").addEventListener("click", async ()=>{
+        try{
+          await api("api/logout", {method:"POST"});
+          toast("Signed out", "You have been logged out.", "ok");
+          location.href = "login.html";
+        }catch(e){
+          toast("Error", e.message, "err");
+        }
+      });
+    })();
   </script>
 </body>
 </html>

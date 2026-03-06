@@ -2,19 +2,40 @@
 <html>
 <head>
   <meta charset="utf-8" />
-  <title>OceanViewReservation Smoke Test</title>
+  <title>OceanViewReservation</title>
+  <link rel="stylesheet" href="assets/styles.css">
+  <script src="assets/app.js" defer></script>
 </head>
 <body>
-  <h2>OceanViewReservation Smoke Test</h2>
-  <button id="btn">Call /api/status</button>
-  <pre id="out"></pre>
+  <div class="container">
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo"></div>
+        <div>
+          <h1>OceanViewReservation</h1>
+          <div class="sub">Hotel Reservation System</div>
+        </div>
+      </div>
+      <div class="nav">
+        <span class="badge">v1</span>
+      </div>
+    </div>
+
+    <div class="main card">
+      <h2>Welcome</h2>
+      <p>Redirecting…</p>
+    </div>
+  </div>
 
   <script>
-    document.getElementById('btn').addEventListener('click', async () => {
-      const res = await fetch('api/status'); // relative path is correct
-      const data = await res.json();
-      document.getElementById('out').textContent = JSON.stringify(data, null, 2);
-    });
+    (async ()=>{
+      try{
+        await api("api/me");
+        location.href = "dashboard.html";
+      }catch{
+        location.href = "login.html";
+      }
+    })();
   </script>
 </body>
 </html>

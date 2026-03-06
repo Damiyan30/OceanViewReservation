@@ -2,152 +2,148 @@
 <html>
 <head>
   <meta charset="utf-8" />
-  <title>Add Reservation</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 24px; max-width: 640px; }
-    input, select { width: 100%; padding: 10px; margin: 6px 0 14px; }
-    button { padding: 10px 14px; cursor: pointer; }
-    .row { margin-bottom: 8px; }
-    .top { display:flex; justify-content:space-between; align-items:center; }
-    pre { background:#f6f6f6; padding:12px; border-radius:8px; overflow:auto; }
-  </style>
+  <title>Add Reservation • OceanViewReservation</title>
+  <link rel="stylesheet" href="assets/styles.css">
+  <script src="assets/app.js" defer></script>
 </head>
 <body>
-  <div class="top">
-    <h2>Add Reservation</h2>
-    <a href="dashboard.html">Back</a>
+  <div class="container">
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo"></div>
+        <div>
+          <h1>OceanViewReservation</h1>
+          <div class="sub">Add Reservation</div>
+        </div>
+      </div>
+      <div class="nav">
+        <span class="badge" data-user-badge>Loading…</span>
+        <a class="badge" href="dashboard.html">Dashboard</a>
+        <a class="badge" href="help.html">Help</a>
+      </div>
+    </div>
+
+    <div class="main card">
+      <h2>Guest details</h2>
+
+      <div class="grid two">
+        <div class="field">
+          <label>Guest Name *</label>
+          <input class="input" id="guestName" placeholder="e.g., John Silva">
+        </div>
+        <div class="field">
+          <label>Contact No *</label>
+          <input class="input" id="contactNo" placeholder="e.g., 0771234567">
+        </div>
+      </div>
+
+      <div class="grid two">
+        <div class="field">
+          <label>Email (optional)</label>
+          <input class="input" id="email" placeholder="e.g., john@gmail.com">
+        </div>
+        <div class="field">
+          <label>Address (optional)</label>
+          <input class="input" id="address" placeholder="e.g., Colombo">
+        </div>
+      </div>
+
+      <hr class="hr">
+
+      <h2>Reservation</h2>
+      <div class="grid three">
+        <div class="field">
+          <label>Room Type *</label>
+          <select class="select" id="typeId"></select>
+        </div>
+        <div class="field">
+          <label>Check-in *</label>
+          <input class="input" id="checkIn" type="date">
+        </div>
+        <div class="field">
+          <label>Check-out *</label>
+          <input class="input" id="checkOut" type="date">
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn btn-primary" id="btnSave">Save Reservation</button>
+        <button class="btn btn-secondary" id="btnClear" type="button">Clear</button>
+      </div>
+
+      <div id="out" class="mono" style="display:none;"></div>
+    </div>
   </div>
-
-  <div class="row">
-    <label>Guest Name</label>
-    <input id="guestName" placeholder="e.g., John Silva">
-  </div>
-
-  <div class="row">
-    <label>Contact No</label>
-    <input id="contactNo" placeholder="e.g., 0771234567">
-  </div>
-
-  <div class="row">
-    <label>Email (optional)</label>
-    <input id="email" placeholder="e.g., john@gmail.com">
-  </div>
-
-  <div class="row">
-    <label>Address (optional)</label>
-    <input id="address" placeholder="e.g., Colombo">
-  </div>
-
-  <div class="row">
-    <label>Room Type</label>
-    <select id="typeId"></select>
-  </div>
-
-  <div class="row">
-    <label>Check-in</label>
-    <input id="checkIn" type="date">
-  </div>
-
-  <div class="row">
-    <label>Check-out</label>
-    <input id="checkOut" type="date">
-  </div>
-
-  <button id="btn">Save Reservation</button>
-
-  <pre id="out"></pre>
 
   <script>
-    const out = (msg) => document.getElementById('out').textContent = msg;
+    const outBox = $("out");
+    const out = (t)=>{ outBox.style.display="block"; outBox.textContent=t; };
 
-    async function ensureLoggedIn() {
-      const res = await fetch('api/me');
-      if (!res.ok) {
-        // not logged in
-        location.href = 'login.html';
-        return false;
-      }
-      return true;
-    }
-
-    async function loadTypes() {
-      const res = await fetch('api/room-types');
-      const txt = await res.text();
-
-      if (!res.ok) {
-        out("Failed to load room types:\n" + txt);
-        return;
-      }
-
-      const types = JSON.parse(txt);
-      const sel = document.getElementById('typeId');
-      sel.innerHTML = '';
-
-      types.forEach(t => {
-        const opt = document.createElement('option');
+    async function loadTypes(){
+      const types = await api("api/room-types");
+      const sel = $("typeId");
+      sel.innerHTML = "";
+      types.forEach(t=>{
+        const opt = document.createElement("option");
         opt.value = t.typeId;
-        opt.textContent = `${t.typeName} (Rs. ${t.nightlyRate}/night)`;
+        opt.textContent = `${t.typeName} (Rs. ${money(t.nightlyRate)}/night)`;
         sel.appendChild(opt);
       });
     }
 
-    document.getElementById('btn').addEventListener('click', async () => {
-  const guestName = document.getElementById('guestName').value.trim();
-  const contactNo = document.getElementById('contactNo').value.trim();
-  const email = document.getElementById('email').value.trim();
-  const address = document.getElementById('address').value.trim();
-  const typeId = parseInt(document.getElementById('typeId').value, 10);
-  const checkIn = document.getElementById('checkIn').value;
-  const checkOut = document.getElementById('checkOut').value;
+    function clearForm(){
+      ["guestName","contactNo","email","address","checkIn","checkOut"].forEach(id=>$(id).value="");
+      outBox.style.display="none";
+      outBox.textContent="";
+    }
 
-  // Required checks
-  if (!guestName) { out("Guest Name is required."); return; }
-  if (!contactNo) { out("Contact No is required."); return; }
-  if (!checkIn) { out("Check-in date is required."); return; }
-  if (!checkOut) { out("Check-out date is required."); return; }
-  if (!typeId) { out("Room Type is required."); return; }
+    (async ()=>{
+      await requireAuth();
+      await loadTypes();
 
-  // Date logic
-  if (checkOut <= checkIn) {
-    out("Invalid dates: Check-out must be after Check-in.");
-    return;
-  }
+      $("btnClear").addEventListener("click", clearForm);
 
-  // Basic contact validation (simple + safe)
-  const digitsOnly = contactNo.replace(/\D/g, '');
-  if (digitsOnly.length < 9) {
-    out("Contact No seems too short. Please enter a valid number.");
-    return;
-  }
+      $("btnSave").addEventListener("click", async ()=>{
+        const guestName = $("guestName").value.trim();
+        const contactNo = $("contactNo").value.trim();
+        const email = $("email").value.trim();
+        const address = $("address").value.trim();
+        const typeId = parseInt($("typeId").value, 10);
+        const checkIn = $("checkIn").value;
+        const checkOut = $("checkOut").value;
 
-  // Email validation (optional field)
-  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    out("Email format is invalid.");
-    return;
-  }
+        // Client-side validation
+        if(!guestName) return toast("Missing", "Guest Name is required.", "warn");
+        if(!contactNo) return toast("Missing", "Contact No is required.", "warn");
+        if(!checkIn) return toast("Missing", "Check-in is required.", "warn");
+        if(!checkOut) return toast("Missing", "Check-out is required.", "warn");
+        if(checkOut <= checkIn) return toast("Invalid dates", "Check-out must be after check-in.", "warn");
 
-  const body = { guestName, contactNo, email, address, typeId, checkIn, checkOut };
+        const digitsOnly = contactNo.replace(/\D/g,'');
+        if(digitsOnly.length < 9) return toast("Invalid", "Contact No seems too short.", "warn");
+        if(email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return toast("Invalid", "Email format is invalid.", "warn");
 
-  const res = await fetch('api/reservations', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify(body)
-  });
+        try{
+          const res = await api("api/reservations", {
+            method:"POST",
+            headers: {"Content-Type":"application/json"},
+            body: JSON.stringify({guestName, contactNo, email, address, typeId, checkIn, checkOut})
+          });
+          out(JSON.stringify(res, null, 2));
+          toast("Saved", `Reservation created. ID: ${res.reservationId}`, "ok");
 
-  const txt = await res.text();
-  out(txt);
-
-  if (res.ok) {
-    const data = JSON.parse(txt);
-    alert("Reservation created! ID: " + data.reservationId);
-  }
-});
-
-    (async () => {
-      // IMPORTANT: This page must be opened via Tomcat URL, not file://
-      // e.g. http://localhost:8080/OceanViewReservation/add-reservation.html
-      const ok = await ensureLoggedIn();
-      if (ok) await loadTypes();
+          // quick next actions
+          const id = res.reservationId;
+          setTimeout(()=> {
+            if(confirm(`Reservation created (ID: ${id}). View it now?`)){
+              location.href = `view-reservation.html#id=${encodeURIComponent(id)}`;
+            }
+          }, 250);
+        }catch(e){
+          out(e.message);
+          toast("Save failed", e.message, "err");
+        }
+      });
     })();
   </script>
 </body>

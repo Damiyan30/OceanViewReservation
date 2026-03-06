@@ -2,83 +2,71 @@
 <html>
 <head>
   <meta charset="utf-8" />
-  <title>OceanViewReservation - Login</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 24px; }
-    .card { max-width: 420px; padding: 16px; border: 1px solid #ccc; border-radius: 8px; }
-    input { width: 100%; padding: 10px; margin: 6px 0 12px; box-sizing: border-box; }
-    button { width: 100%; padding: 12px; cursor: pointer; }
-    .err { color: #b00020; white-space: pre-wrap; margin-top: 10px; }
-    .ok { color: #0b6b0b; white-space: pre-wrap; margin-top: 10px; }
-  </style>
+  <title>Login • OceanViewReservation</title>
+  <link rel="stylesheet" href="assets/styles.css">
+  <script src="assets/app.js" defer></script>
 </head>
 <body>
-  <h2>OceanViewReservation - Login</h2>
+  <div class="container">
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo"></div>
+        <div>
+          <h1>OceanViewReservation</h1>
+          <div class="sub">Secure staff login</div>
+        </div>
+      </div>
+      <div class="nav">
+        <a class="badge" href="help.html">Help</a>
+      </div>
+    </div>
 
-  <div class="card">
-    <label>Username</label>
-    <input id="username" autocomplete="username" />
+    <div class="main card">
+      <h2>Login</h2>
+      <div class="grid two">
+        <div class="field">
+          <label>Username</label>
+          <input class="input" id="username" placeholder="e.g., admin" autocomplete="username">
+        </div>
+        <div class="field">
+          <label>Password</label>
+          <input class="input" id="password" type="password" placeholder="••••••••" autocomplete="current-password">
+        </div>
+      </div>
 
-    <label>Password</label>
-    <input id="password" type="password" autocomplete="current-password" />
+      <div class="actions">
+        <button class="btn btn-primary" id="btnLogin">Sign in</button>
+        <a class="btn btn-secondary" href="index.html" style="display:inline-block;">Home</a>
+      </div>
 
-    <button id="btn">Login</button>
-
-    <div id="msg" class=""></div>
+      <div id="out" class="mono" style="display:none;"></div>
+    </div>
   </div>
 
   <script>
-    const msg = document.getElementById('msg');
+    $("btnLogin").addEventListener("click", async ()=>{
+      const username = $("username").value.trim();
+      const password = $("password").value;
 
-    function show(text, ok = false) {
-      msg.className = ok ? 'ok' : 'err';
-      msg.textContent = text;
-    }
-
-    async function alreadyLoggedInCheck() {
-      // If session exists, /api/me should be allowed and return 200
-      const res = await fetch('api/me');
-      if (res.ok) {
-        window.location.href = 'dashboard.html';
-      }
-    }
-
-    async function login() {
-      msg.textContent = '';
-
-      const username = document.getElementById('username').value.trim();
-      const password = document.getElementById('password').value;
-
-      if (!username || !password) {
-        show('Please enter username and password.');
+      if(!username || !password){
+        toast("Missing info", "Enter username and password.", "warn");
         return;
       }
 
-      const res = await fetch('api/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
-      });
-
-      const text = await res.text();
-
-      if (res.ok) {
-        show(text, true);
-        window.location.href = 'dashboard.html';
-      } else {
-        show(text);
+      try{
+        const data = await api("api/login", {
+          method:"POST",
+          headers: {"Content-Type":"application/json"},
+          body: JSON.stringify({username, password})
+        });
+        toast("Welcome", `Logged in as ${username}`, "ok");
+        location.href = "dashboard.html";
+      }catch(e){
+        $("out").style.display = "block";
+        $("out").textContent = e.message;
+        toast("Login failed", e.message, "err");
       }
-    }
-
-    document.getElementById('btn').addEventListener('click', login);
-
-    // Press Enter to login
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') login();
     });
-
-    // Auto redirect if already logged in
-    alreadyLoggedInCheck();
   </script>
 </body>
 </html>
