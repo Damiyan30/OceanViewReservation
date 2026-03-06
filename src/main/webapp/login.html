@@ -1,92 +1,117 @@
 <!DOCTYPE html>
-
-<html class="dark" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Ocean Portal - Login</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
-<link href="assets/styles.css" rel="stylesheet"/>
-<script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        "primary": "#13ecec",
-                        "background-light": "#f6f8f8",
-                        "background-dark": "#102222",
-                    },
-                    fontFamily: {
-                        "display": ["Plus Jakarta Sans"]
-                    },
-                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
-                },
-            },
-        }
-    </script>
+<html class="dark" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>OceanView Reservation - Login</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            primary: "#0dccf2",
+            "background-light": "#f5f8f8",
+            "background-dark": "#101f22",
+          },
+          fontFamily: {
+            display: ["Plus Jakarta Sans", "sans-serif"],
+          },
+          borderRadius: {
+            DEFAULT: "0.25rem",
+            lg: "0.5rem",
+            xl: "0.75rem",
+            full: "9999px",
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    .glass-morphism {
+      background: rgba(16, 31, 34, 0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(13, 204, 242, 0.1);
+    }
+    .ocean-gradient {
+      background: linear-gradient(135deg, #0dccf2 0%, #0891b2 100%);
+    }
+  </style>
 </head>
-<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen flex flex-col">
-<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
-<div class="layout-container flex h-full grow flex-col">
-<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-slate-800 px-6 py-4 md:px-10">
-<div class="flex items-center gap-3 text-primary">
-<div class="size-6">
-<svg fill="currentColor" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-<path d="M24 45.8096C19.6865 45.8096 15.4698 44.5305 11.8832 42.134C8.29667 39.7376 5.50128 36.3314 3.85056 32.3462C2.19985 28.361 1.76794 23.9758 2.60947 19.7452C3.451 15.5145 5.52816 11.6284 8.57829 8.5783C11.6284 5.52817 15.5145 3.45101 19.7452 2.60948C23.9758 1.76795 28.361 2.19986 32.3462 3.85057C36.3314 5.50129 39.7376 8.29668 42.134 11.8833C44.5305 15.4698 45.8096 19.6865 45.8096 24L24 24L24 45.8096Z"></path>
-</svg>
-</div>
-<h2 class="text-slate-900 dark:text-slate-100 text-lg font-bold leading-tight tracking-tight">OceanView</h2>
-</div>
-<a class="flex min-w-[84px] cursor-pointer items-center justify-center rounded-xl h-10 px-4 bg-primary/10 text-primary text-sm font-bold border border-primary/20 hover:bg-primary/20 transition-colors" href="help.html"><span class="truncate">Help</span></a>
-</header>
-<main class="flex-1 flex items-center justify-center p-6 bg-gradient-to-b from-background-dark to-slate-950">
-<div class="w-full max-w-md">
-<div class="bg-slate-900/50 border border-slate-800 rounded-xl overflow-hidden shadow-2xl backdrop-blur-sm">
-<div class="h-32 w-full bg-cover bg-center relative" style="background-image: linear-gradient(135deg, rgba(19,236,236,.18), rgba(0,0,0,0));">
-<div class="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent"></div>
-</div>
-<div class="px-8 pb-10 pt-4 flex flex-col gap-6">
-<div class="text-center">
-<h1 class="text-3xl font-black text-slate-100 mb-2">Welcome Back</h1>
-<p class="text-slate-400 text-sm">Login to continue</p>
-</div>
-<form class="flex flex-col gap-5" id="loginForm">
-<div class="flex flex-col gap-2">
-<label class="text-slate-300 text-sm font-medium px-1" for="username">Username</label>
-<div class="relative">
-<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-xl">person</span>
-<input class="w-full pl-12 pr-4 h-14 rounded-xl bg-slate-800/50 border border-slate-700 text-slate-100 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-slate-600" id="username" name="username" placeholder="Enter your username" required="" type="text"/>
-</div>
-</div>
-<div class="flex flex-col gap-2">
-<label class="text-slate-300 text-sm font-medium px-1" for="password">Password</label>
-<div class="relative">
-<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-xl">lock</span>
-<input class="w-full pl-12 pr-4 h-14 rounded-xl bg-slate-800/50 border border-slate-700 text-slate-100 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-slate-600" id="password" name="password" placeholder="••••••••" required="" type="password"/>
-</div>
-</div>
-<button class="mt-2 w-full h-14 bg-primary hover:bg-primary/90 text-background-dark font-bold rounded-xl shadow-lg shadow-primary/20 transition-all active:scale-[0.98] flex items-center justify-center gap-2" id="btnLogin" type="submit">
-<span>Log In</span>
-<span class="material-symbols-outlined">login</span>
-</button>
-</form>
-<pre class="hidden mt-4 p-4 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-xs overflow-auto font-mono" id="out"></pre>
-</div>
-</div>
-</div>
-</main>
-<footer class="p-6 text-center text-slate-600 text-xs">
-                © 2024 Ocean Portal
-            </footer>
-</div>
-</div>
-<div class="fixed bottom-6 right-6 hidden transform translate-y-10 opacity-0 transition-all duration-300 pointer-events-none" id="toast">
-<div class="bg-red-500 text-white px-6 py-3 rounded-xl shadow-xl flex items-center gap-3">
-<span class="material-symbols-outlined">error</span>
-<span class="font-medium text-sm" id="toastMessage">Login failed</span>
-</div>
-</div>
-<script src="assets/app.js"></script>
-</body></html>
+<body class="min-h-screen bg-background-light font-display dark:bg-background-dark">
+  <div class="relative flex min-h-screen w-full flex-col overflow-x-hidden bg-background-light dark:bg-background-dark">
+    <div class="pointer-events-none fixed inset-0 z-0 overflow-hidden">
+      <div class="absolute -left-[10%] -top-[10%] h-[40%] w-[40%] rounded-full bg-primary/10 blur-[120px]"></div>
+      <div class="absolute bottom-[10%] right-[10%] h-[30%] w-[30%] rounded-full bg-primary/5 blur-[100px]"></div>
+    </div>
+
+    <div class="layout-container z-10 flex h-full grow flex-col">
+      <header class="flex items-center justify-between border-b border-slate-200 px-6 py-4 dark:border-primary/10 lg:px-40">
+        <div class="flex items-center gap-3 text-slate-900 dark:text-white">
+          <div class="size-8 text-primary">
+            <svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+              <path d="M44 11.2727C44 14.0109 39.8386 16.3957 33.69 17.6364C39.8386 18.877 44 21.2618 44 24C44 26.7382 39.8386 29.123 33.69 30.3636C39.8386 31.6043 44 33.9891 44 36.7273C44 40.7439 35.0457 44 24 44C12.9543 44 4 40.7439 4 36.7273C4 33.9891 8.16144 31.6043 14.31 30.3636C8.16144 29.123 4 26.7382 4 24C4 21.2618 8.16144 18.877 14.31 17.6364C8.16144 16.3957 4 14.0109 4 11.2727C4 7.25611 12.9543 4 24 4C35.0457 4 44 7.25611 44 11.2727Z" fill="currentColor"></path>
+            </svg>
+          </div>
+          <h2 class="text-xl font-bold leading-tight tracking-tight text-slate-900 dark:text-white">OceanView Reservation</h2>
+        </div>
+      </header>
+
+      <main class="flex flex-1 items-center justify-center p-6">
+        <div class="glass-morphism w-full max-w-md rounded-xl border border-primary/20 p-8 shadow-2xl">
+          <div class="mb-8 text-center">
+            <h1 class="mb-2 text-3xl font-black leading-tight tracking-tight text-slate-900 dark:text-white">Welcome Back</h1>
+            <p class="text-base font-normal text-slate-500 dark:text-primary/60">Log in to manage your seaside reservations</p>
+          </div>
+
+          <form class="space-y-6" id="loginForm">
+            <div class="flex flex-col gap-2">
+              <label class="px-1 text-sm font-semibold text-slate-700 dark:text-slate-200" for="username">Username</label>
+              <div class="relative">
+                <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-xl text-primary/60">person</span>
+                <input class="form-input flex h-14 w-full rounded-lg border border-slate-200 bg-white pl-12 pr-4 text-base font-normal text-slate-900 placeholder:text-slate-400 focus:outline-0 focus:ring-2 focus:ring-primary/50 dark:border-primary/20 dark:bg-background-dark/50 dark:text-white dark:placeholder:text-slate-500" id="username" name="username" placeholder="Enter your username" required type="text"/>
+              </div>
+            </div>
+
+            <div class="flex flex-col gap-2">
+              <label class="px-1 text-sm font-semibold text-slate-700 dark:text-slate-200" for="password">Password</label>
+              <div class="relative">
+                <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-xl text-primary/60">lock</span>
+                <input class="form-input flex h-14 w-full rounded-lg border border-slate-200 bg-white pl-12 pr-4 text-base font-normal text-slate-900 placeholder:text-slate-400 focus:outline-0 focus:ring-2 focus:ring-primary/50 dark:border-primary/20 dark:bg-background-dark/50 dark:text-white dark:placeholder:text-slate-500" id="password" name="password" placeholder="Enter your password" required type="password"/>
+              </div>
+            </div>
+
+            <button class="ocean-gradient flex h-14 w-full items-center justify-center gap-2 rounded-lg text-lg font-bold text-white shadow-lg shadow-primary/20 transition-all hover:opacity-90" id="btnLogin" type="submit">
+              <span>Sign In</span>
+              <span class="material-symbols-outlined">login</span>
+            </button>
+          </form>
+
+          <pre aria-live="polite" class="hidden mt-6 overflow-x-auto whitespace-pre-wrap rounded-lg border border-red-500/30 bg-red-500/10 p-4 font-mono text-xs text-red-400" id="out"></pre>
+
+          <div class="mt-8 flex justify-center border-t border-slate-200 pt-6 dark:border-primary/10">
+            <a class="text-sm font-medium text-primary transition-colors hover:text-primary/80" href="help.html">Need help signing in?</a>
+          </div>
+        </div>
+      </main>
+
+      <div class="px-6 pb-10 lg:px-40">
+        <div class="group relative h-48 w-full overflow-hidden rounded-xl">
+          <div class="absolute inset-0 z-10 bg-gradient-to-t from-background-dark to-transparent"></div>
+          <img alt="Calm tropical beach sunset" class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDX7BxuVjLzegAlEE7uJP5ho4mWPGxHQ-NExISEsP5Kz-Qx7nGxkltx5JWyAiVHlPc-GX7KmUGOg7By8xy6--xRr5_T3HwPot9ff4m2mJ9dbTy2QV_YLKwuEPl1tHuM6aKuzza97PE0dLkHABiyyoNwhB0L7K4YkKKBVBWdpuWyiuIj9dnjDKHLLVrHSm4x6p0EBHgdb_r60vfoFajEQh-AKgHsb6GPI2qnZ4iCCVJlfgatJcGpBbCux0uTU5gYdWmCFSyOw_JM4w0"/>
+          <div class="absolute bottom-6 left-6 z-20">
+            <p class="text-lg font-bold text-white">Experience Serenity</p>
+            <p class="text-sm text-slate-300">Luxury stays at the world's most beautiful coastlines.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/app.js"></script>
+</body>
+</html>

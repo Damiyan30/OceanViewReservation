@@ -1,96 +1,204 @@
 <!DOCTYPE html>
-
-<html class="dark" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>View Reservation</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
-<link href="assets/styles.css" rel="stylesheet"/>
-<script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        "primary": "#13ecec",
-                        "background-light": "#f6f8f8",
-                        "background-dark": "#102222",
-                    },
-                    fontFamily: {
-                        "display": ["Plus Jakarta Sans"]
-                    },
-                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
-                },
-            },
-        }
-    </script>
+<html class="dark" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Billing | OceanViewReservation</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&display=swap" rel="stylesheet"/>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            primary: "#0dccf2",
+            "background-light": "#f5f8f8",
+            "background-dark": "#101f22",
+            "navy-accent": "#1a2e35",
+          },
+          fontFamily: {
+            display: ["Plus Jakarta Sans", "sans-serif"],
+          },
+          borderRadius: {
+            DEFAULT: "0.25rem",
+            lg: "0.5rem",
+            xl: "0.75rem",
+            full: "9999px",
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    @media print {
+      .no-print {
+        display: none !important;
+      }
+      body {
+        background-color: white !important;
+        color: black !important;
+      }
+      #invoice {
+        border: none !important;
+        box-shadow: none !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background-color: white !important;
+        color: black !important;
+      }
+      .dark #invoice {
+        background-color: white !important;
+        color: black !important;
+      }
+      .text-slate-100,
+      .text-slate-400,
+      .text-primary {
+        color: black !important;
+      }
+      .bg-navy-accent {
+        background-color: #f1f5f9 !important;
+      }
+    }
+  </style>
 </head>
-<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen flex flex-col">
-<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
-<div class="layout-container flex h-full grow flex-col">
-<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-slate-800 px-6 py-4 md:px-10">
-<div class="flex items-center gap-3 text-primary">
-<div class="size-6">
-<svg fill="currentColor" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-<path d="M24 45.8096C19.6865 45.8096 15.4698 44.5305 11.8832 42.134C8.29667 39.7376 5.50128 36.3314 3.85056 32.3462C2.19985 28.361 1.76794 23.9758 2.60947 19.7452C3.451 15.5145 5.52816 11.6284 8.57829 8.5783C11.6284 5.52817 15.5145 3.45101 19.7452 2.60948C23.9758 1.76795 28.361 2.19986 32.3462 3.85057C36.3314 5.50129 39.7376 8.29668 42.134 11.8833C44.5305 15.4698 45.8096 19.6865 45.8096 24L24 24L24 45.8096Z"></path>
-</svg>
-</div>
-<h2 class="text-slate-900 dark:text-slate-100 text-lg font-bold leading-tight tracking-tight">OceanView</h2>
-</div>
-<a class="flex min-w-[84px] cursor-pointer items-center justify-center rounded-xl h-10 px-4 bg-primary/10 text-primary text-sm font-bold border border-primary/20 hover:bg-primary/20 transition-colors" href="dashboard.html"><span class="truncate">Dashboard</span></a>
-</header>
+<body class="min-h-screen bg-background-light font-display text-slate-900 dark:bg-background-dark dark:text-slate-100">
+  <header class="no-print border-b border-slate-200 bg-background-light px-6 py-4 dark:border-slate-800 dark:bg-background-dark">
+    <div class="mx-auto flex max-w-5xl items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="rounded-lg bg-primary p-1.5">
+          <span class="material-symbols-outlined text-background-dark">waves</span>
+        </div>
+        <h2 class="text-xl font-bold tracking-tight">OceanView Reservation</h2>
+      </div>
+      <nav class="hidden items-center gap-8 md:flex">
+        <a class="text-sm font-medium transition-colors hover:text-primary" href="dashboard.html">Dashboard</a>
+        <a class="text-sm font-medium transition-colors hover:text-primary" href="view-reservation.html">Reservations</a>
+        <a class="text-sm font-medium transition-colors hover:text-primary" href="help.html">Help</a>
+      </nav>
+      <div class="flex items-center gap-3">
+        <a class="rounded-lg p-2 transition-colors hover:bg-slate-200 dark:hover:bg-slate-800" href="dashboard.html" title="Back to dashboard">
+          <span class="material-symbols-outlined">account_circle</span>
+        </a>
+      </div>
+    </div>
+  </header>
 
-<main class="flex-1 flex items-center justify-center p-6 bg-gradient-to-b from-background-dark to-slate-950">
-<div class="w-full max-w-3xl bg-slate-900/50 border border-slate-800 rounded-xl shadow-2xl p-8 backdrop-blur-sm">
-<h1 class="text-2xl md:text-3xl font-black text-slate-100 mb-2">View Reservation</h1>
-<p class="text-slate-400 text-sm mb-6">Search by Reservation ID.</p>
+  <main class="mx-auto max-w-5xl px-6 py-10">
+    <div class="no-print mb-10 rounded-xl border border-slate-200 bg-slate-100 p-6 dark:border-slate-800 dark:bg-navy-accent/50">
+      <h1 class="mb-2 text-2xl font-bold">Billing &amp; Invoices</h1>
+      <p class="mb-6 text-slate-500 dark:text-slate-400">Generate and print professional guest invoices by Reservation ID.</p>
+      <div class="flex flex-col items-end gap-4 md:flex-row">
+        <div class="w-full flex-1">
+          <label class="mb-2 block text-sm font-semibold" for="rid">Reservation ID (RID)</label>
+          <div class="relative">
+            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+            <input class="w-full rounded-lg border border-slate-300 bg-white py-3 pl-10 pr-4 outline-none transition-all focus:border-transparent focus:ring-2 focus:ring-primary dark:border-slate-700 dark:bg-background-dark" id="rid" placeholder="e.g. 1" type="text"/>
+          </div>
+        </div>
+        <button class="flex items-center gap-2 rounded-lg bg-primary px-8 py-3 font-bold text-background-dark transition-all hover:bg-primary/90" id="btnLoad" type="button">
+          <span class="material-symbols-outlined">download_done</span>
+          Load Bill
+        </button>
+        <button class="cursor-not-allowed flex items-center gap-2 rounded-lg bg-slate-200 px-6 py-3 font-bold text-slate-400 transition-all dark:bg-slate-800" disabled id="btnPrint" type="button">
+          <span class="material-symbols-outlined">print</span>
+          Print Invoice
+        </button>
+      </div>
+      <div aria-live="polite" class="hidden mt-4 rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300" id="invoiceError"></div>
+    </div>
 
-<div class="flex flex-col md:flex-row gap-3 items-stretch md:items-end">
-<div class="flex-1">
-<label class="text-slate-300 text-sm font-medium px-1">Reservation ID</label>
-<input class="w-full h-12 rounded-xl bg-slate-800/50 border border-slate-700 text-slate-100 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" id="rid" placeholder="e.g., 1" type="number"/>
-</div>
-<button class="flex min-w-[140px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-12 px-6 bg-primary text-background-dark text-sm font-bold transition-all hover:bg-primary/90" id="btnSearch" type="button">
-<span class="material-symbols-outlined mr-2">search</span> Search
-</button>
-<button class="flex min-w-[180px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-12 px-6 bg-slate-200 dark:bg-slate-800 text-slate-400 dark:text-slate-500 text-sm font-bold transition-all disabled:cursor-not-allowed hover:enabled:bg-primary/20 hover:enabled:text-primary" disabled id="btnBill" type="button">
-<span class="material-symbols-outlined mr-2">receipt_long</span> View Billing
-</button>
-</div>
+    <div class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl dark:border-slate-800 dark:bg-navy-accent/30" id="invoice">
+      <div class="flex flex-col justify-between gap-8 border-b border-slate-200 bg-slate-50/50 p-8 dark:border-slate-800 dark:bg-transparent md:flex-row md:p-12">
+        <div class="space-y-4">
+          <div class="flex items-center gap-2 text-primary">
+            <span class="material-symbols-outlined text-4xl">waves</span>
+            <span class="text-2xl font-black uppercase tracking-tighter text-slate-900 dark:text-slate-100">OceanView</span>
+          </div>
+          <div class="text-sm leading-relaxed text-slate-500 dark:text-slate-400">
+            1024 Coastal Highway<br/>
+            Malibu, California 90265<br/>
+            contact@oceanview-resort.com<br/>
+            +1 (555) 000-8888
+          </div>
+        </div>
+        <div class="space-y-1 text-left md:text-right">
+          <h2 class="text-4xl font-light uppercase tracking-widest text-slate-400 dark:text-slate-500">Invoice</h2>
+          <p class="font-bold text-slate-900 dark:text-slate-100" id="invId">Invoice #: --</p>
+          <p class="text-sm text-slate-500 dark:text-slate-400" id="invDate">Date: --</p>
+        </div>
+      </div>
 
-<div class="hidden mt-8" id="result">
-<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-<div class="p-5 rounded-xl border border-slate-800 bg-slate-800/30">
-<p class="text-slate-400 text-xs">Guest</p>
-<p class="text-slate-100 font-bold text-lg" id="res-guest-name">---</p>
-<p class="text-slate-400 text-sm" id="res-guest-email">---</p>
-</div>
+      <div class="grid grid-cols-1 gap-8 p-8 md:grid-cols-2 md:p-12">
+        <div>
+          <h3 class="mb-4 text-xs font-bold uppercase tracking-widest text-primary">Guest Information</h3>
+          <div class="text-lg font-semibold text-slate-900 dark:text-slate-100" id="billGuestName">Guest name</div>
+          <div class="text-sm text-slate-500 dark:text-slate-400" id="billGuestMeta">Guest contact details</div>
+        </div>
+        <div class="md:text-right">
+          <h3 class="mb-4 text-xs font-bold uppercase tracking-widest text-primary">Stay Details</h3>
+          <div class="text-sm text-slate-500 dark:text-slate-400">
+            <span class="font-medium text-slate-900 dark:text-slate-100">Check-in:</span> <span id="billCheckIn">--</span><br/>
+            <span class="font-medium text-slate-900 dark:text-slate-100">Check-out:</span> <span id="billCheckOut">--</span><br/>
+            <span class="font-medium text-slate-900 dark:text-slate-100">Room:</span> <span id="billRoom">--</span>
+          </div>
+        </div>
+      </div>
 
-<div class="p-5 rounded-xl border border-slate-800 bg-slate-800/30">
-<p class="text-slate-400 text-xs">Room</p>
-<p class="text-slate-100 font-bold text-lg" id="res-room-type">---</p>
-<p class="text-slate-400 text-sm" id="res-room-id">---</p>
-</div>
+      <div class="px-8 pb-8 md:px-12">
+        <table class="w-full border-collapse text-left">
+          <thead>
+            <tr class="border-b border-slate-200 dark:border-slate-800">
+              <th class="py-4 text-xs font-bold uppercase tracking-wider text-slate-400">Description</th>
+              <th class="py-4 text-center text-xs font-bold uppercase tracking-wider text-slate-400">Qty / Nights</th>
+              <th class="py-4 text-right text-xs font-bold uppercase tracking-wider text-slate-400">Unit Price</th>
+              <th class="py-4 text-right text-xs font-bold uppercase tracking-wider text-slate-400">Amount</th>
+            </tr>
+          </thead>
+          <tbody class="text-slate-900 dark:text-slate-100" id="invRows">
+            <tr>
+              <td class="py-8 text-center text-sm text-slate-400" colspan="4">Load a reservation bill to see invoice details.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-<div class="p-5 rounded-xl border border-slate-800 bg-slate-800/30">
-<p class="text-slate-400 text-xs">Check-in</p>
-<p class="text-slate-100 font-bold" id="res-checkin">---</p>
-</div>
+      <div class="flex flex-col items-start justify-between gap-6 bg-slate-50 p-8 dark:bg-navy-accent/50 md:flex-row md:p-12">
+        <div class="max-w-xs">
+          <h4 class="mb-2 text-xs font-bold uppercase tracking-wider text-slate-400">Payment Note</h4>
+          <p class="text-xs italic text-slate-500 dark:text-slate-400">All prices are in LKR. Please settle any outstanding balance at the front desk before departure.</p>
+        </div>
+        <div class="w-full space-y-3 md:w-64">
+          <div class="flex justify-between text-sm">
+            <span class="text-slate-500 dark:text-slate-400">Subtotal:</span>
+            <span class="font-medium" id="subtotal">Rs. 0.00</span>
+          </div>
+          <div class="flex justify-between text-sm">
+            <span class="text-slate-500 dark:text-slate-400">Tax:</span>
+            <span class="font-medium" id="tax">Rs. 0.00</span>
+          </div>
+          <div class="flex items-center justify-between border-t border-slate-300 pt-3 dark:border-slate-700">
+            <span class="text-lg font-bold">Total:</span>
+            <span class="text-2xl font-black text-primary" id="total">Rs. 0.00</span>
+          </div>
+        </div>
+      </div>
+    </div>
 
-<div class="p-5 rounded-xl border border-slate-800 bg-slate-800/30">
-<p class="text-slate-400 text-xs">Check-out</p>
-<p class="text-slate-100 font-bold" id="res-checkout">---</p>
-</div>
-</div>
-</div>
+    <div class="no-print mt-10 flex justify-center">
+      <div class="flex flex-col items-center gap-2 opacity-20">
+        <span class="material-symbols-outlined text-6xl">verified</span>
+        <p class="text-xs font-medium uppercase tracking-[0.5em]">Authentic Invoice</p>
+      </div>
+    </div>
+  </main>
 
-<pre class="mt-6 p-4 rounded-lg bg-slate-950/40 border border-slate-800 text-slate-200 text-xs overflow-auto font-mono" id="out">// JSON output will appear here…</pre>
-</div>
-</main>
+  <footer class="no-print mt-auto border-t border-slate-200 px-6 py-8 text-center text-sm text-slate-500 dark:border-slate-800">
+    <p>© 2024 OceanView Resort Management System. All rights reserved.</p>
+  </footer>
 
-</div>
-</div>
-<script src="assets/app.js"></script>
-</body></html>
+  <script src="assets/app.js"></script>
+</body>
+</html>
