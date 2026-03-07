@@ -13,6 +13,13 @@ import java.util.List;
 
 public class ReservationDAO {
 
+    public static class DashboardStats {
+        public int totalReservations;
+        public int todayCheckIns;
+        public int todayCheckOuts;
+        public int activeStays;
+    }
+
     public int create(Reservation r) throws Exception {
         String sql = "INSERT INTO reservations (guest_name, contact_no, email, address, type_id, check_in, check_out) "
                    + "VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -73,6 +80,25 @@ public class ReservationDAO {
         return list;
     }
 
+    public List<Reservation> findRecent(int limit) throws Exception {
+        List<Reservation> list = new ArrayList<>();
+        String sql = baseSelect() + " ORDER BY r.reservation_id DESC LIMIT ?";
+
+        try (Connection con = Db.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, limit);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    list.add(mapRow(rs));
+                }
+            }
+        }
+
+        return list;
+    }
+
     public boolean update(Reservation r) throws Exception {
         String sql = "UPDATE reservations "
                    + "SET guest_name = ?, contact_no = ?, email = ?, address = ?, type_id = ?, check_in = ?, check_out = ? "
@@ -102,6 +128,31 @@ public class ReservationDAO {
 
             ps.setInt(1, id);
             return ps.executeUpdate() > 0;
+        }
+    }
+
+    public DashboardStats getDashboardStats() throws Exception {
+        String sql = "SELECT "
+                   + "COUNT(*) AS total_reservations, "
+                   + "COALESCE(SUM(CASE WHEN check_in = CURDATE() THEN 1 ELSE 0 END), 0) AS today_check_ins, "
+                   + "COALESCE(SUM(CASE WHEN check_out = CURDATE() THEN 1 ELSE 0 END), 0) AS today_check_outs, "
+                   + "COALESCE(SUM(CASE WHEN check_in <= CURDATE() AND check_out > CURDATE() THEN 1 ELSE 0 END), 0) AS active_stays "
+                   + "FROM reservations";
+
+        try (Connection con = Db.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            DashboardStats stats = new DashboardStats();
+
+            if (rs.next()) {
+                stats.totalReservations = rs.getInt("total_reservations");
+                stats.todayCheckIns = rs.getInt("today_check_ins");
+                stats.todayCheckOuts = rs.getInt("today_check_outs");
+                stats.activeStays = rs.getInt("active_stays");
+            }
+
+            return stats;
         }
     }
 

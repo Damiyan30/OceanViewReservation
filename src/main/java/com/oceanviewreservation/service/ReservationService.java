@@ -13,7 +13,9 @@ public class ReservationService {
     }
 
     public ReservationService(ReservationDAO dao) {
-        if (dao == null) throw new IllegalArgumentException("DAO required");
+        if (dao == null) {
+            throw new IllegalArgumentException("DAO required");
+        }
         this.dao = dao;
     }
 
@@ -29,6 +31,20 @@ public class ReservationService {
 
     public List<Reservation> getAllReservations() throws Exception {
         return dao.findAll();
+    }
+
+    public List<Reservation> getRecentReservations(int limit) throws Exception {
+        if (limit <= 0) {
+            limit = 5;
+        }
+        if (limit > 20) {
+            limit = 20;
+        }
+        return dao.findRecent(limit);
+    }
+
+    public ReservationDAO.DashboardStats getDashboardStats() throws Exception {
+        return dao.getDashboardStats();
     }
 
     public boolean updateReservation(Reservation r) throws Exception {
@@ -61,15 +77,31 @@ public class ReservationService {
         r.email = (r.email == null || r.email.trim().isEmpty()) ? null : r.email.trim();
         r.address = (r.address == null || r.address.trim().isEmpty()) ? null : r.address.trim();
 
-        if (r.guestName.isBlank()) throw new IllegalArgumentException("Guest name required");
-        if (r.contactNo.isBlank()) throw new IllegalArgumentException("Contact number required");
-        if (r.checkIn == null || r.checkOut == null) throw new IllegalArgumentException("Dates required");
-        if (r.typeId <= 0) throw new IllegalArgumentException("Room type required");
+        if (r.guestName.isBlank()) {
+            throw new IllegalArgumentException("Guest name required");
+        }
+        if (r.contactNo.isBlank()) {
+            throw new IllegalArgumentException("Contact number required");
+        }
+        if (r.checkIn == null || r.checkOut == null) {
+            throw new IllegalArgumentException("Dates required");
+        }
+        if (r.typeId <= 0) {
+            throw new IllegalArgumentException("Room type required");
+        }
 
-        if (r.guestName.length() > 100) throw new IllegalArgumentException("Guest name too long (max 100)");
-        if (r.contactNo.length() > 30) throw new IllegalArgumentException("Contact number too long (max 30)");
-        if (r.email != null && r.email.length() > 120) throw new IllegalArgumentException("Email too long (max 120)");
-        if (r.address != null && r.address.length() > 200) throw new IllegalArgumentException("Address too long (max 200)");
+        if (r.guestName.length() > 100) {
+            throw new IllegalArgumentException("Guest name too long (max 100)");
+        }
+        if (r.contactNo.length() > 30) {
+            throw new IllegalArgumentException("Contact number too long (max 30)");
+        }
+        if (r.email != null && r.email.length() > 120) {
+            throw new IllegalArgumentException("Email too long (max 120)");
+        }
+        if (r.address != null && r.address.length() > 200) {
+            throw new IllegalArgumentException("Address too long (max 200)");
+        }
 
         if (!r.checkOut.isAfter(r.checkIn)) {
             throw new IllegalArgumentException("Check-out must be after check-in");

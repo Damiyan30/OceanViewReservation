@@ -255,6 +255,63 @@
     if (!node) return;
     node.textContent = value;
   }
+function formatLongDate(isoDate) {
+  if (!isoDate) return "--";
+  const date = new Date(isoDate);
+  if (Number.isNaN(date.getTime())) return isoDate;
+
+  return date.toLocaleDateString(undefined, {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+}
+
+function renderDashboardStats(data) {
+  setText("dashboardTodayDate", formatLongDate(data.today));
+  setText("statTotalReservations", data.totalReservations ?? 0, "0");
+  setText("statTodayCheckIns", data.todayCheckIns ?? 0, "0");
+  setText("statTodayCheckOuts", data.todayCheckOuts ?? 0, "0");
+  setText("statActiveStays", data.activeStays ?? 0, "0");
+
+  const tableBody = $("recentReservationsBody");
+  if (!tableBody) return;
+
+  const recentReservations = Array.isArray(data.recentReservations) ? data.recentReservations : [];
+
+  if (!recentReservations.length) {
+    tableBody.innerHTML = '<tr><td class="px-4 py-8 text-center text-slate-400" colspan="5">No recent reservations found.</td></tr>';
+    return;
+  }
+
+  tableBody.innerHTML = recentReservations
+    .map((reservation) => {
+      const nights = nightsBetween(reservation.checkIn, reservation.checkOut);
+      return `
+        <tr class="hover:bg-slate-900/20">
+          <td class="px-4 py-4 font-bold text-primary">${escapeHtml(reservationCode(reservation.reservationId))}</td>
+          <td class="px-4 py-4">
+            <div class="font-semibold text-white">${escapeHtml(reservation.guestName || "--")}</div>
+            <div class="text-xs text-slate-400">${escapeHtml(reservation.contactNo || "--")}</div>
+          </td>
+          <td class="px-4 py-4 text-slate-300">${escapeHtml(reservation.typeName || "--")}</td>
+          <td class="px-4 py-4 text-slate-300">
+            <div>${escapeHtml(reservation.checkIn || "--")} → ${escapeHtml(reservation.checkOut || "--")}</div>
+            <div class="text-xs text-slate-400">${escapeHtml(String(nights))} night${nights === 1 ? "" : "s"}</div>
+          </td>
+          <td class="px-4 py-4 text-right">
+            <a class="inline-flex rounded-lg bg-primary px-3 py-2 text-xs font-bold text-slate-900 transition-opacity hover:opacity-90"
+               href="view-reservation.html#id=${encodeURIComponent(reservation.reservationId)}">
+              Open
+            </a>
+          </td>
+        </tr>
+      `;
+    })
+    .join("");
+}
+
 
   async function initIndex() {
     const progressFill = document.querySelector("[data-progress-fill]");
@@ -335,12 +392,24 @@
     });
   }
 
-  async function initDashboard() {
-    await requireAuth();
+ async function initDashboard() {
+  await requireAuth();
 
-    const logoutButton = $("btnLogout");
-    if (!logoutButton) return;
+  const logoutButton = $("btnLogout");
 
+  async function loadDashboardStats() {
+    hidePanel("dashboardError");
+
+    try {
+      const data = await api("api/dashboard/stats");
+      renderDashboardStats(data);
+    } catch (error) {
+      showPanel("dashboardError", error.message);
+      toast(error.message, "err");
+    }
+  }
+
+  if (logoutButton) {
     logoutButton.addEventListener("click", async () => {
       setBusy(logoutButton, true, "Signing out...");
       try {
@@ -353,6 +422,9 @@
       }
     });
   }
+
+  await loadDashboardStats();
+}
 
   async function initAddReservation() {
     await requireAuth();

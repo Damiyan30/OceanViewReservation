@@ -53,6 +53,19 @@ public class ReservationServiceTest {
         }
 
         @Override
+        public List<Reservation> findRecent(int limit) {
+            Reservation first = new Reservation();
+            first.reservationId = 7;
+            first.guestName = "Recent Guest";
+            first.contactNo = "0770000000";
+            first.typeId = 1;
+            first.checkIn = LocalDate.of(2026, 3, 20);
+            first.checkOut = LocalDate.of(2026, 3, 22);
+
+            return List.of(first);
+        }
+
+        @Override
         public boolean update(Reservation r) {
             return r.reservationId != 999;
         }
@@ -60,6 +73,16 @@ public class ReservationServiceTest {
         @Override
         public boolean deleteById(int id) {
             return id != 999;
+        }
+
+        @Override
+        public DashboardStats getDashboardStats() {
+            DashboardStats stats = new DashboardStats();
+            stats.totalReservations = 12;
+            stats.todayCheckIns = 3;
+            stats.todayCheckOuts = 2;
+            stats.activeStays = 5;
+            return stats;
         }
     }
 
@@ -147,5 +170,25 @@ public class ReservationServiceTest {
     void invalidReservationId_shouldThrow() {
         ReservationService service = new ReservationService(new FakeReservationDAO());
         assertThrows(IllegalArgumentException.class, () -> service.getReservation(0));
+    }
+
+    @Test
+    void dashboardStats_shouldReturnCounts() throws Exception {
+        ReservationService service = new ReservationService(new FakeReservationDAO());
+        ReservationDAO.DashboardStats stats = service.getDashboardStats();
+
+        assertEquals(12, stats.totalReservations);
+        assertEquals(3, stats.todayCheckIns);
+        assertEquals(2, stats.todayCheckOuts);
+        assertEquals(5, stats.activeStays);
+    }
+
+    @Test
+    void recentReservations_shouldReturnList() throws Exception {
+        ReservationService service = new ReservationService(new FakeReservationDAO());
+        List<Reservation> list = service.getRecentReservations(5);
+
+        assertEquals(1, list.size());
+        assertEquals(7, list.get(0).reservationId);
     }
 }
