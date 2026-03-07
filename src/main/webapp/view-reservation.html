@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-  <title>View Reservations | OceanView Reservation</title>
+  <title>Reservations | OceanView Reservation</title>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
   <script>
@@ -39,50 +39,102 @@
           <nav class="flex items-center gap-2 md:gap-4">
             <a class="rounded-lg px-4 py-2 text-sm font-medium text-slate-600 transition-colors hover:text-primary dark:text-slate-400" href="dashboard.html">Dashboard</a>
             <a class="rounded-lg px-4 py-2 text-sm font-semibold text-primary" href="view-reservation.html">Reservations</a>
-            <a class="rounded-lg px-4 py-2 text-sm font-medium text-slate-600 transition-colors hover:text-primary dark:text-slate-400" href="help.html">Help</a>
+            <a class="rounded-lg px-4 py-2 text-sm font-medium text-slate-600 transition-colors hover:text-primary dark:text-slate-400" href="add-reservation.html">Add Reservation</a>
           </nav>
         </div>
       </header>
 
       <main class="flex flex-1 flex-col items-center">
-        <div class="flex w-full max-w-[960px] flex-col gap-8 px-6 py-10 lg:px-10">
-          <div class="relative flex min-h-[280px] w-full flex-col justify-end overflow-hidden rounded-2xl bg-slate-900 p-8 shadow-2xl">
+        <div class="flex w-full max-w-[1180px] flex-col gap-8 px-6 py-10 lg:px-10">
+          <div class="relative flex min-h-[240px] w-full flex-col justify-end overflow-hidden rounded-2xl bg-slate-900 p-8 shadow-2xl">
             <div class="absolute inset-0 opacity-60">
               <div class="h-full w-full bg-cover bg-center" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA4Hw1OZeYB_n-KJNAHG0iVwNeUlN6zIOhBdazJXvmnYwDZJKQMkvROIToNdZXe7nok2mvBTy24E9Iao_AvkhnqXflWIhcGg5CujqXn2UfbHDraJRRfF0eBHr1QziY4anVkIT_HCiyv-SqDuZFvQ0HY0KxrcRBFFYjEZhd6zZWjuU7FUNvMGjFrMwC_umVIvcVlCelGOZfPTzxlzpdXRM3bgF93IaHnQVERWksieONSwY7vlEi41HM5O6UuXEDB_VFLDU-HOcUdwWQ');"></div>
             </div>
             <div class="absolute inset-0 bg-gradient-to-t from-background-dark via-transparent to-transparent"></div>
             <div class="relative z-10 flex flex-col gap-2">
-              <span class="inline-flex w-fit items-center rounded-full bg-primary/20 px-3 py-1 text-xs font-bold uppercase tracking-widest text-primary">Guest Services</span>
-              <h1 class="text-4xl font-extrabold tracking-tight text-white lg:text-5xl">View Reservations</h1>
-              <p class="max-w-lg text-slate-300">Retrieve booking details and jump directly to billing when needed.</p>
+              <span class="inline-flex w-fit items-center rounded-full bg-primary/20 px-3 py-1 text-xs font-bold uppercase tracking-widest text-primary">Reservation CRUD</span>
+              <h1 class="text-4xl font-extrabold tracking-tight text-white lg:text-5xl">Manage Reservations</h1>
+              <p class="max-w-2xl text-slate-300">Search by ID, view all reservations, update guest details, and delete records.</p>
             </div>
           </div>
 
-          <section class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm backdrop-blur-sm dark:border-slate-800 dark:bg-slate-900/50 lg:p-8">
-            <h2 class="mb-6 text-xl font-bold">Find a Reservation</h2>
-            <div class="flex flex-col items-end gap-4 md:flex-row">
-              <label class="flex w-full flex-1 flex-col">
-                <span class="mb-2 ml-1 text-sm font-semibold text-slate-600 dark:text-slate-400">Reservation ID (RID)</span>
-                <input class="form-input h-14 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-base text-slate-900 transition-all focus:border-primary focus:ring-2 focus:ring-primary/20 dark:border-slate-700 dark:bg-slate-800/50 dark:text-white" id="rid" inputmode="numeric" placeholder="Enter reservation number" type="text"/>
-              </label>
-              <div class="flex w-full gap-3 md:w-auto">
-                <button class="flex h-14 flex-1 items-center justify-center whitespace-nowrap rounded-xl bg-primary px-8 font-bold text-slate-900 transition-opacity hover:opacity-90 md:flex-none" id="btnSearch" type="button">Check Status</button>
-                <button class="flex h-14 flex-1 items-center justify-center rounded-xl bg-slate-200 px-8 font-bold text-slate-400 transition-all disabled:opacity-50 dark:bg-slate-800 dark:text-slate-500 md:flex-none" disabled id="btnBill" type="button">View Bill</button>
+          <section class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900/50 lg:p-8">
+            <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+              <div class="w-full lg:max-w-xl">
+                <h2 class="mb-2 text-xl font-bold">Find a Reservation</h2>
+                <p class="mb-4 text-sm text-slate-500 dark:text-slate-400">Enter a reservation ID to load it into the editor.</p>
+                <div class="flex flex-col items-end gap-4 md:flex-row">
+                  <label class="flex w-full flex-1 flex-col">
+                    <span class="mb-2 ml-1 text-sm font-semibold text-slate-600 dark:text-slate-400">Reservation ID (RID)</span>
+                    <input class="form-input h-14 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-base text-slate-900 transition-all focus:border-primary focus:ring-2 focus:ring-primary/20 dark:border-slate-700 dark:bg-slate-800/50 dark:text-white" id="rid" inputmode="numeric" placeholder="Enter reservation number" type="text"/>
+                  </label>
+                  <div class="flex w-full gap-3 md:w-auto">
+                    <button class="flex h-14 flex-1 items-center justify-center whitespace-nowrap rounded-xl bg-primary px-8 font-bold text-slate-900 transition-opacity hover:opacity-90 md:flex-none" id="btnSearch" type="button">Search</button>
+                    <button class="flex h-14 flex-1 items-center justify-center rounded-xl bg-slate-200 px-8 font-bold text-slate-700 transition-colors hover:bg-slate-300 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700 md:flex-none" id="btnRefreshList" type="button">Refresh List</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-2 gap-4 sm:grid-cols-4">
+                <div class="rounded-2xl bg-primary/10 px-5 py-4">
+                  <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Loaded ID</p>
+                  <p class="mt-2 text-2xl font-black text-primary" id="summary-current-id">--</p>
+                </div>
+                <div class="rounded-2xl bg-emerald-500/10 px-5 py-4">
+                  <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Total Records</p>
+                  <p class="mt-2 text-2xl font-black text-emerald-500" id="summary-total-reservations">0</p>
+                </div>
+                <div class="rounded-2xl bg-amber-500/10 px-5 py-4">
+                  <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Current Nights</p>
+                  <p class="mt-2 text-2xl font-black text-amber-500" id="summary-current-nights">--</p>
+                </div>
+                <div class="rounded-2xl bg-slate-200 px-5 py-4 dark:bg-slate-800">
+                  <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Room Type</p>
+                  <p class="mt-2 text-lg font-black text-slate-900 dark:text-slate-100" id="summary-current-room">--</p>
+                </div>
               </div>
             </div>
             <div class="hidden mt-4 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300" id="viewError"></div>
           </section>
 
+          <section class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900/50">
+            <div class="mb-4 flex items-center justify-between gap-4">
+              <div>
+                <h2 class="text-xl font-bold">All Reservations</h2>
+                <p class="text-sm text-slate-500 dark:text-slate-400">Load any record into the form or delete directly from the table.</p>
+              </div>
+            </div>
+            <div class="overflow-x-auto rounded-2xl border border-slate-200 dark:border-slate-800">
+              <table class="min-w-full divide-y divide-slate-200 text-sm dark:divide-slate-800">
+                <thead class="bg-slate-100/70 dark:bg-slate-800/70">
+                  <tr>
+                    <th class="px-4 py-3 text-left font-bold uppercase tracking-wider text-slate-500">RID</th>
+                    <th class="px-4 py-3 text-left font-bold uppercase tracking-wider text-slate-500">Guest</th>
+                    <th class="px-4 py-3 text-left font-bold uppercase tracking-wider text-slate-500">Contact</th>
+                    <th class="px-4 py-3 text-left font-bold uppercase tracking-wider text-slate-500">Room Type</th>
+                    <th class="px-4 py-3 text-left font-bold uppercase tracking-wider text-slate-500">Stay</th>
+                    <th class="px-4 py-3 text-right font-bold uppercase tracking-wider text-slate-500">Actions</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200 dark:divide-slate-800" id="reservationsTableBody">
+                  <tr>
+                    <td class="px-4 py-8 text-center text-slate-400" colspan="6">Loading reservations...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
           <div class="hidden" id="result">
-            <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
-              <div class="space-y-6 lg:col-span-2">
+            <div class="grid grid-cols-1 gap-6 xl:grid-cols-3">
+              <div class="space-y-6 xl:col-span-2">
                 <div class="rounded-2xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900/50">
-                  <div class="mb-6 flex items-start justify-between">
+                  <div class="mb-6 flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
                     <div>
                       <h3 class="text-lg font-bold">Booking Information</h3>
                       <p class="text-sm text-slate-500">RID: #<span id="display-rid">--</span></p>
                     </div>
-                    <span class="rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-bold uppercase text-emerald-500">Confirmed</span>
+                    <button class="rounded-xl bg-slate-200 px-4 py-2 text-sm font-bold text-slate-700 transition-colors hover:bg-slate-300 disabled:opacity-50 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700" disabled id="btnBill" type="button">View Bill</button>
                   </div>
                   <div class="grid grid-cols-1 gap-8 md:grid-cols-2">
                     <div class="space-y-1">
@@ -98,12 +150,10 @@
                     <div class="space-y-1">
                       <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Check-In</p>
                       <p class="font-semibold" id="res-checkin">--</p>
-                      <p class="text-sm text-slate-400">After 3:00 PM</p>
                     </div>
                     <div class="space-y-1">
                       <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Check-Out</p>
                       <p class="font-semibold" id="res-checkout">--</p>
-                      <p class="text-sm text-slate-400">Before 11:00 AM</p>
                     </div>
                   </div>
                 </div>
@@ -113,6 +163,51 @@
                   <div class="rounded-2xl border border-dashed border-primary/20 bg-primary/5 p-6">
                     <p class="text-sm leading-relaxed text-slate-600 dark:text-slate-300" id="res-address">Address not provided</p>
                   </div>
+                </div>
+
+                <div class="rounded-2xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900/50">
+                  <div class="mb-6 flex items-center justify-between gap-4">
+                    <div>
+                      <h3 class="text-lg font-bold">Update Reservation</h3>
+                      <p class="text-sm text-slate-500 dark:text-slate-400">Edit the loaded reservation and save changes.</p>
+                    </div>
+                  </div>
+                  <div class="hidden mb-4 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300" id="editError"></div>
+                  <form class="grid grid-cols-1 gap-5 md:grid-cols-2" id="editReservationForm">
+                    <input id="editReservationId" type="hidden"/>
+                    <div>
+                      <label class="mb-2 block text-sm font-semibold text-slate-600 dark:text-slate-400" for="editGuestName">Guest Name</label>
+                      <input class="h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-base text-slate-900 focus:border-primary focus:ring-2 focus:ring-primary/20 dark:border-slate-700 dark:bg-slate-800/50 dark:text-white" id="editGuestName" type="text"/>
+                    </div>
+                    <div>
+                      <label class="mb-2 block text-sm font-semibold text-slate-600 dark:text-slate-400" for="editContactNo">Contact Number</label>
+                      <input class="h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-base text-slate-900 focus:border-primary focus:ring-2 focus:ring-primary/20 dark:border-slate-700 dark:bg-slate-800/50 dark:text-white" id="editContactNo" type="text"/>
+                    </div>
+                    <div>
+                      <label class="mb-2 block text-sm font-semibold text-slate-600 dark:text-slate-400" for="editEmail">Email</label>
+                      <input class="h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-base text-slate-900 focus:border-primary focus:ring-2 focus:ring-primary/20 dark:border-slate-700 dark:bg-slate-800/50 dark:text-white" id="editEmail" type="email"/>
+                    </div>
+                    <div>
+                      <label class="mb-2 block text-sm font-semibold text-slate-600 dark:text-slate-400" for="editTypeId">Room Type</label>
+                      <select class="h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-base text-slate-900 focus:border-primary focus:ring-2 focus:ring-primary/20 dark:border-slate-700 dark:bg-slate-800/50 dark:text-white" id="editTypeId"></select>
+                    </div>
+                    <div>
+                      <label class="mb-2 block text-sm font-semibold text-slate-600 dark:text-slate-400" for="editCheckIn">Check-In</label>
+                      <input class="h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-base text-slate-900 focus:border-primary focus:ring-2 focus:ring-primary/20 dark:border-slate-700 dark:bg-slate-800/50 dark:text-white [color-scheme:dark]" id="editCheckIn" type="date"/>
+                    </div>
+                    <div>
+                      <label class="mb-2 block text-sm font-semibold text-slate-600 dark:text-slate-400" for="editCheckOut">Check-Out</label>
+                      <input class="h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-base text-slate-900 focus:border-primary focus:ring-2 focus:ring-primary/20 dark:border-slate-700 dark:bg-slate-800/50 dark:text-white [color-scheme:dark]" id="editCheckOut" type="date"/>
+                    </div>
+                    <div class="md:col-span-2">
+                      <label class="mb-2 block text-sm font-semibold text-slate-600 dark:text-slate-400" for="editAddress">Address</label>
+                      <input class="h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-base text-slate-900 focus:border-primary focus:ring-2 focus:ring-primary/20 dark:border-slate-700 dark:bg-slate-800/50 dark:text-white" id="editAddress" type="text"/>
+                    </div>
+                    <div class="md:col-span-2 flex flex-col gap-3 pt-2 sm:flex-row">
+                      <button class="flex-1 rounded-xl bg-primary px-5 py-3 text-sm font-bold text-slate-900 transition-opacity hover:opacity-90" id="btnUpdateReservation" type="submit">Update Reservation</button>
+                      <button class="rounded-xl bg-red-500 px-5 py-3 text-sm font-bold text-white transition-opacity hover:opacity-90" id="btnDeleteReservation" type="button">Delete Reservation</button>
+                    </div>
+                  </form>
                 </div>
               </div>
 
@@ -134,12 +229,6 @@
                     </div>
                   </div>
                   <button class="mt-6 w-full rounded-xl border border-primary/30 bg-primary/20 py-3 text-sm font-bold text-primary transition-colors hover:bg-primary/30" id="btnBillSide" type="button">Open Billing Page</button>
-                </div>
-
-                <div class="rounded-2xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900/50">
-                  <h3 class="mb-4 text-sm font-bold uppercase tracking-wider text-slate-500">Need Help?</h3>
-                  <p class="text-sm leading-relaxed text-slate-600 dark:text-slate-300">If you need assistance with a guest booking, billing, or account access, open the help center.</p>
-                  <a class="mt-4 block w-full rounded-xl bg-slate-100 py-3 text-center text-sm font-bold text-slate-700 transition-colors hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300" href="help.html">Open Help Center</a>
                 </div>
               </div>
             </div>

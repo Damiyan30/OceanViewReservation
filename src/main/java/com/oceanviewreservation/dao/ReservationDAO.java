@@ -8,6 +8,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ReservationDAO {
 
@@ -29,18 +31,17 @@ public class ReservationDAO {
             ps.executeUpdate();
 
             try (ResultSet keys = ps.getGeneratedKeys()) {
-                if (keys.next()) return keys.getInt(1);
+                if (keys.next()) {
+                    return keys.getInt(1);
+                }
             }
         }
+
         throw new RuntimeException("Failed to create reservation");
     }
 
     public Reservation findById(int id) throws Exception {
-        String sql = "SELECT r.reservation_id, r.guest_name, r.contact_no, r.email, r.address, "
-                   + "r.check_in, r.check_out, rt.type_id, rt.type_name, rt.nightly_rate "
-                   + "FROM reservations r "
-                   + "JOIN room_types rt ON r.type_id = rt.type_id "
-                   + "WHERE r.reservation_id = ?";
+        String sql = baseSelect() + " WHERE r.reservation_id = ?";
 
         try (Connection con = Db.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -48,22 +49,82 @@ public class ReservationDAO {
             ps.setInt(1, id);
 
             try (ResultSet rs = ps.executeQuery()) {
-                if (!rs.next()) return null;
-
-                Reservation r = new Reservation();
-                r.reservationId = rs.getInt("reservation_id");
-                r.guestName = rs.getString("guest_name");
-                r.contactNo = rs.getString("contact_no");
-                r.email = rs.getString("email");
-                r.address = rs.getString("address");
-                r.checkIn = rs.getDate("check_in").toLocalDate();
-                r.checkOut = rs.getDate("check_out").toLocalDate();
-                r.typeId = rs.getInt("type_id");
-                r.typeName = rs.getString("type_name");
-                r.nightlyRate = rs.getDouble("nightly_rate");
-                return r;
+                if (!rs.next()) {
+                    return null;
+                }
+                return mapRow(rs);
             }
         }
+    }
+
+    public List<Reservation> findAll() throws Exception {
+        List<Reservation> list = new ArrayList<>();
+        String sql = baseSelect() + " ORDER BY r.reservation_id DESC";
+
+        try (Connection con = Db.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                list.add(mapRow(rs));
+            }
+        }
+
+        return list;
+    }
+
+    public boolean update(Reservation r) throws Exception {
+        String sql = "UPDATE reservations "
+                   + "SET guest_name = ?, contact_no = ?, email = ?, address = ?, type_id = ?, check_in = ?, check_out = ? "
+                   + "WHERE reservation_id = ?";
+
+        try (Connection con = Db.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, r.guestName);
+            ps.setString(2, r.contactNo);
+            ps.setString(3, r.email);
+            ps.setString(4, r.address);
+            ps.setInt(5, r.typeId);
+            ps.setDate(6, Date.valueOf(r.checkIn));
+            ps.setDate(7, Date.valueOf(r.checkOut));
+            ps.setInt(8, r.reservationId);
+
+            return ps.executeUpdate() > 0;
+        }
+    }
+
+    public boolean deleteById(int id) throws Exception {
+        String sql = "DELETE FROM reservations WHERE reservation_id = ?";
+
+        try (Connection con = Db.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, id);
+            return ps.executeUpdate() > 0;
+        }
+    }
+
+    private String baseSelect() {
+        return "SELECT r.reservation_id, r.guest_name, r.contact_no, r.email, r.address, "
+             + "r.check_in, r.check_out, rt.type_id, rt.type_name, rt.nightly_rate "
+             + "FROM reservations r "
+             + "JOIN room_types rt ON r.type_id = rt.type_id";
+    }
+
+    private Reservation mapRow(ResultSet rs) throws Exception {
+        Reservation r = new Reservation();
+        r.reservationId = rs.getInt("reservation_id");
+        r.guestName = rs.getString("guest_name");
+        r.contactNo = rs.getString("contact_no");
+        r.email = rs.getString("email");
+        r.address = rs.getString("address");
+        r.checkIn = rs.getDate("check_in").toLocalDate();
+        r.checkOut = rs.getDate("check_out").toLocalDate();
+        r.typeId = rs.getInt("type_id");
+        r.typeName = rs.getString("type_name");
+        r.nightlyRate = rs.getDouble("nightly_rate");
+        return r;
     }
 
     public static long nightsBetween(LocalDate in, LocalDate out) {

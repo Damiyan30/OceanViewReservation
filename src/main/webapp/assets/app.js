@@ -234,6 +234,7 @@
         (data && typeof data === "object" && (data.error || data.message)) ||
         (data && typeof data === "object" && data.create === "fail" && data.error) ||
         (data && typeof data === "object" && data.login === "fail" && data.error) ||
+        (data && typeof data === "object" && data.update === "fail" && data.error) ||
         (typeof data === "string" && data.trim()) ||
         `Request failed (${response.status})`;
       throw new Error(message);
@@ -474,11 +475,20 @@
 
     const ridInput = $("rid");
     const searchButton = $("btnSearch");
+    const refreshButton = $("btnRefreshList");
     const topBillButton = $("btnBill");
     const sideBillButton = $("btnBillSide");
     const result = $("result");
+    const tableBody = $("reservationsTableBody");
+    const editForm = $("editReservationForm");
+    const updateButton = $("btnUpdateReservation");
+    const deleteButton = $("btnDeleteReservation");
+    const editTypeSelect = $("editTypeId");
+    const editCheckIn = $("editCheckIn");
+    const editCheckOut = $("editCheckOut");
 
     let currentReservationId = null;
+    let roomTypes = [];
 
     const openBill = () => {
       if (!currentReservationId) {
@@ -493,9 +503,82 @@
 
     const resetView = () => {
       hidePanel("viewError");
+      hidePanel("editError");
       result?.classList.add("hidden");
       currentReservationId = null;
+      setText("summary-current-id", "--");
+      setText("summary-current-nights", "--");
+      setText("summary-current-room", "--");
       if (topBillButton) topBillButton.disabled = true;
+    };
+
+    const renderTable = (reservations) => {
+      setText("summary-total-reservations", reservations.length);
+
+      if (!tableBody) return;
+
+      if (!reservations.length) {
+        tableBody.innerHTML = '<tr><td class="px-4 py-8 text-center text-slate-400" colspan="6">No reservations found.</td></tr>';
+        return;
+      }
+
+      tableBody.innerHTML = reservations
+        .map((reservation) => {
+          const nights = nightsBetween(reservation.checkIn, reservation.checkOut);
+          return `
+            <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/40">
+              <td class="px-4 py-4 font-bold text-primary">#${escapeHtml(String(reservation.reservationId))}</td>
+              <td class="px-4 py-4">
+                <div class="font-semibold">${escapeHtml(reservation.guestName || "--")}</div>
+                <div class="text-xs text-slate-500 dark:text-slate-400">${escapeHtml(reservation.email || "No email")}</div>
+              </td>
+              <td class="px-4 py-4">${escapeHtml(reservation.contactNo || "--")}</td>
+              <td class="px-4 py-4">${escapeHtml(reservation.typeName || "--")}</td>
+              <td class="px-4 py-4">
+                <div>${escapeHtml(reservation.checkIn || "--")} → ${escapeHtml(reservation.checkOut || "--")}</div>
+                <div class="text-xs text-slate-500 dark:text-slate-400">${escapeHtml(String(nights))} night${nights === 1 ? "" : "s"}</div>
+              </td>
+              <td class="px-4 py-4">
+                <div class="flex justify-end gap-2">
+                  <button class="rounded-lg bg-primary px-3 py-2 text-xs font-bold text-slate-900 transition-opacity hover:opacity-90" data-action="load" data-id="${escapeHtml(String(reservation.reservationId))}" type="button">Load</button>
+                  <button class="rounded-lg bg-red-500 px-3 py-2 text-xs font-bold text-white transition-opacity hover:opacity-90" data-action="delete" data-id="${escapeHtml(String(reservation.reservationId))}" type="button">Delete</button>
+                </div>
+              </td>
+            </tr>
+          `;
+        })
+        .join("");
+    };
+
+    const loadRoomTypes = async () => {
+      const cacheKey = "ovr_room_types_v1";
+      const cached = sessionStorage.getItem(cacheKey);
+
+      if (cached) {
+        try {
+          const parsed = JSON.parse(cached);
+          if (Date.now() - parsed.t < 10 * 60 * 1000 && Array.isArray(parsed.v)) {
+            roomTypes = parsed.v;
+          }
+        } catch {
+          roomTypes = [];
+        }
+      }
+
+      if (!roomTypes.length) {
+        roomTypes = await api("api/room-types");
+        sessionStorage.setItem(cacheKey, JSON.stringify({ t: Date.now(), v: roomTypes }));
+      }
+
+      if (editTypeSelect) {
+        editTypeSelect.innerHTML = '<option value="">Select a room type</option>';
+        roomTypes.forEach((type) => {
+          const option = document.createElement("option");
+          option.value = String(type.typeId);
+          option.textContent = `${type.typeName} (Rs. ${money(type.nightlyRate)}/night)`;
+          editTypeSelect.appendChild(option);
+        });
+      }
     };
 
     const fillReservation = (reservation) => {
@@ -515,27 +598,90 @@
       setText("res-address", reservation.address || "Address not provided");
       setText("res-nights", `${nights} night${nights === 1 ? "" : "s"}`);
       setText("res-total", `Rs. ${money(total)}`);
+      setText("summary-current-id", reservation.reservationId || "--");
+      setText("summary-current-nights", nights || "--");
+      setText("summary-current-room", reservation.typeName || "--");
 
       currentReservationId = reservation.reservationId;
       if (topBillButton) topBillButton.disabled = false;
       result?.classList.remove("hidden");
     };
 
+    const fillEditForm = (reservation) => {
+      if ($("editReservationId")) $("editReservationId").value = reservation.reservationId || "";
+      if ($("editGuestName")) $("editGuestName").value = reservation.guestName || "";
+      if ($("editContactNo")) $("editContactNo").value = reservation.contactNo || "";
+      if ($("editEmail")) $("editEmail").value = reservation.email || "";
+      if ($("editAddress")) $("editAddress").value = reservation.address || "";
+      if (editTypeSelect) editTypeSelect.value = String(reservation.typeId || "");
+      if (editCheckIn) editCheckIn.value = reservation.checkIn || "";
+      if (editCheckOut) editCheckOut.value = reservation.checkOut || "";
+    };
+
     async function loadReservation(id) {
       setBusy(searchButton, true, "Searching...");
-      resetView();
+      hidePanel("viewError");
+      hidePanel("editError");
 
       try {
         const reservation = await api(`api/reservations?id=${encodeURIComponent(id)}`);
         fillReservation(reservation);
+        fillEditForm(reservation);
+        if (ridInput) ridInput.value = String(id);
         toast("Reservation loaded.", "ok");
       } catch (error) {
+        resetView();
         showPanel("viewError", error.message);
         toast(error.message, "err");
       } finally {
         setBusy(searchButton, false);
       }
     }
+
+    async function loadReservationList() {
+      if (refreshButton) setBusy(refreshButton, true, "Refreshing...");
+      hidePanel("viewError");
+
+      try {
+        const reservations = await api("api/reservations");
+        renderTable(Array.isArray(reservations) ? reservations : []);
+      } catch (error) {
+        if (tableBody) {
+          tableBody.innerHTML = `<tr><td class="px-4 py-8 text-center text-red-500" colspan="6">${escapeHtml(error.message)}</td></tr>`;
+        }
+        showPanel("viewError", error.message);
+        toast(error.message, "err");
+      } finally {
+        if (refreshButton) setBusy(refreshButton, false);
+      }
+    }
+
+    async function deleteReservation(id) {
+      if (!window.confirm(`Delete reservation #${id}? This cannot be undone.`)) {
+        return;
+      }
+
+      if (deleteButton) setBusy(deleteButton, true, "Deleting...");
+
+      try {
+        await api(`api/reservations?id=${encodeURIComponent(id)}`, { method: "DELETE" });
+        if (String(currentReservationId) === String(id)) {
+          resetView();
+          if (ridInput) ridInput.value = "";
+        }
+        await loadReservationList();
+        toast("Reservation deleted.", "ok");
+      } catch (error) {
+        showPanel("viewError", error.message);
+        toast(error.message, "err");
+      } finally {
+        if (deleteButton) setBusy(deleteButton, false);
+      }
+    }
+
+    refreshButton?.addEventListener("click", () => {
+      void loadReservationList();
+    });
 
     searchButton?.addEventListener("click", () => {
       const id = (ridInput?.value || "").trim();
@@ -548,6 +694,91 @@
     });
 
     bindEnter(ridInput, () => searchButton?.click());
+
+    tableBody?.addEventListener("click", (event) => {
+      const button = event.target.closest("button[data-action]");
+      if (!button) return;
+
+      const { action, id } = button.dataset;
+      if (!id) return;
+
+      if (action === "load") {
+        void loadReservation(id);
+      } else if (action === "delete") {
+        void deleteReservation(id);
+      }
+    });
+
+    editCheckIn?.addEventListener("change", () => {
+      if (!editCheckIn.value || !editCheckOut) return;
+      editCheckOut.min = editCheckIn.value;
+      if (editCheckOut.value && editCheckOut.value <= editCheckIn.value) {
+        editCheckOut.value = "";
+      }
+    });
+
+    editForm?.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      hidePanel("editError");
+
+      const payload = {
+        reservationId: Number.parseInt($("editReservationId")?.value || "0", 10),
+        guestName: ($("editGuestName")?.value || "").trim(),
+        contactNo: ($("editContactNo")?.value || "").trim(),
+        email: ($("editEmail")?.value || "").trim(),
+        address: ($("editAddress")?.value || "").trim(),
+        typeId: Number.parseInt(editTypeSelect?.value || "0", 10),
+        checkIn: editCheckIn?.value || "",
+        checkOut: editCheckOut?.value || "",
+      };
+
+      if (!payload.reservationId) return showPanel("editError", "Reservation id is missing.");
+      if (!payload.guestName) return showPanel("editError", "Guest name is required.");
+      if (!payload.contactNo) return showPanel("editError", "Contact number is required.");
+      if (!payload.typeId) return showPanel("editError", "Room type is required.");
+      if (!payload.checkIn) return showPanel("editError", "Check-in date is required.");
+      if (!payload.checkOut) return showPanel("editError", "Check-out date is required.");
+      if (payload.checkOut <= payload.checkIn) return showPanel("editError", "Check-out must be after check-in.");
+
+      const digits = payload.contactNo.replace(/\D/g, "");
+      if (digits.length < 9) return showPanel("editError", "Contact number seems too short.");
+      if (payload.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(payload.email)) {
+        return showPanel("editError", "Email format is invalid.");
+      }
+
+      setBusy(updateButton, true, "Updating...");
+
+      try {
+        await api("api/reservations", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+
+        await loadReservation(payload.reservationId);
+        await loadReservationList();
+        toast("Reservation updated.", "ok");
+      } catch (error) {
+        showPanel("editError", error.message);
+        toast(error.message, "err");
+      } finally {
+        setBusy(updateButton, false);
+      }
+    });
+
+    deleteButton?.addEventListener("click", () => {
+      const id = $("editReservationId")?.value || currentReservationId;
+      if (!id) {
+        toast("Load a reservation first.", "warn");
+        return;
+      }
+      void deleteReservation(id);
+    });
+
+    digitsOnlyInput("rid");
+    digitsOnlyInput("editContactNo");
+    await loadRoomTypes();
+    await loadReservationList();
 
     const hashId = getHashId();
     if (hashId && ridInput) {
